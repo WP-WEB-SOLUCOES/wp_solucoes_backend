@@ -605,7 +605,6 @@ io.on('connection', (socket) => {
 
     // --- Cliente ---
     socket.on('client_join', async ({ sessionId }) => {
-        if (socket.user) return;
         if (!sessionId) return;
 
         try {
