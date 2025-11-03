@@ -21,7 +21,6 @@ const { exec } = require('child_process');
 // --- Configuração Principal (Carregada do .env) ---
 const MONGO_URI = process.env.MONGO_URI;
 const PORT = process.env.PORT || 3000;
-const HOST = '0.0.0.0';
 const JWT_SECRET = process.env.JWT_SECRET;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
@@ -803,8 +802,7 @@ io.on('connection', (socket) => {
 // =======================================================
 // 8. Iniciar Servidor
 // =======================================================
-server.listen(PORT, HOST, () => {
-    console.log(`🚀 Servidor rodando em http://${HOST}:${PORT}`);
+server.listen(PORT, () => {
     console.log(`🤖 Sistema de IA inicializado`);
     console.log(`💬 Chat em tempo pronto para conexões`);
     if (IS_PRODUCTION) {
