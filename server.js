@@ -191,6 +191,11 @@ app.use(
         objectSrc: ["'none'"], 
       },
     },
+    // <<< ESTA É A CORREÇÃO CRÍTICA >>>
+    // Desliga o HSTS se não estiver em produção
+    hsts: IS_PRODUCTION 
+      ? { maxAge: 31536000, includeSubDomains: true, preload: true }
+      : false 
   })
 );
 
