@@ -8,25 +8,33 @@
     <meta name="description"
         content="Especialistas em desenvolvimento de aplicativos e soluções web sob medida para impulsionar negócios digitais">
 
+    <!-- ========== FAVICON CONFIGURATION ========== -->
     <link rel="apple-touch-icon" sizes="180x180" href="public/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="public/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="public/favicon-16x16.png">
     <link rel="manifest" href="public/site.webmanifest">
     <link rel="icon" href="public/favicon.ico">
     <meta name="theme-color" content="#c62da5">
+    <!-- ========== END FAVICON ========== -->
+
+    <!-- CSS -->
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/chat.css">
 
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 </head>
 
 <body>
+    <!-- Progress Bar -->
     <div class="progress-bar" id="progressBar"></div>
 
+    <!-- Header -->
     <header id="header">
         <div class="container">
             <nav class="nav-container">
@@ -58,6 +66,7 @@
         </div>
     </header>
 
+    <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container">
             <div class="hero-content">
@@ -89,6 +98,7 @@
         </div>
     </section>
 
+    <!-- Features Section -->
     <section class="section" id="features">
         <div class="container">
             <div class="section-header">
@@ -133,6 +143,7 @@
         </div>
     </section>
 
+    <!-- Services Section -->
     <section class="section services" id="services">
         <div class="container">
             <div class="section-header">
@@ -204,6 +215,7 @@
         </div>
     </section>
 
+    <!-- Portfolio Section -->
     <section class="section portfolio" id="portfolio">
         <div class="container">
             <div class="section-header">
@@ -222,7 +234,8 @@
             </div>
 
             <div class="portfolio-grid" id="portfolioGrid">
-                <div class="portfolio-item" data-category="web" data-popup-id="popup1">
+                <!-- Sistema Web 1 -->
+                <div class="portfolio-item" data-category="web" onclick="openPopup('popup1')">
                     <div class="portfolio-image">
                         <i class="fas fa-shopping-cart"></i>
                     </div>
@@ -238,11 +251,12 @@
                             <span class="portfolio-tag">MongoDB</span>
                             <span class="portfolio-tag">IA</span>
                         </div>
-                        <button class="btn btn-outline btn-popup-details">Ver Detalhes</button>
+                        <button class="btn btn-outline">Ver Detalhes</button>
                     </div>
                 </div>
 
-                <div class="portfolio-item" data-category="mobile" data-popup-id="popup2">
+                <!-- App Mobile 1 -->
+                <div class="portfolio-item" data-category="mobile" onclick="openPopup('popup2')">
                     <div class="portfolio-image">
                         <i class="fas fa-mobile-alt"></i>
                     </div>
@@ -257,11 +271,12 @@
                             <span class="portfolio-tag">MongoDB</span>
                             <span class="portfolio-tag">IA</span>
                         </div>
-                        <button class="btn btn-outline btn-popup-details">Ver Detalhes</button>
+                        <button class="btn btn-outline">Ver Detalhes</button>
                     </div>
                 </div>
 
-                <div class="portfolio-item" data-category="ai" data-popup-id="popup3">
+                <!-- IA & Automação 1 -->
+                <div class="portfolio-item" data-category="ai" onclick="openPopup('popup3')">
                     <div class="portfolio-image">
                         <i class="fas fa-robot"></i>
                     </div>
@@ -277,11 +292,12 @@
                             <span class="portfolio-tag">IA</span>
                             <span class="portfolio-tag">ChatBot</span>
                         </div>
-                        <button class="btn btn-outline btn-popup-details">Ver Detalhes</button>
+                        <button class="btn btn-outline">Ver Detalhes</button>
                     </div>
                 </div>
 
-                <div class="portfolio-item" data-category="web" data-popup-id="popup4">
+                <!-- Sistema Web 2 -->
+                <div class="portfolio-item" data-category="web" onclick="openPopup('popup4')">
                     <div class="portfolio-image">
                         <i class="fas fa-chart-line"></i>
                     </div>
@@ -296,11 +312,12 @@
                             <span class="portfolio-tag">FastAPI</span>
                             <span class="portfolio-tag">MongoDB</span>
                         </div>
-                        <button class="btn btn-outline btn-popup-details">Ver Detalhes</button>
+                        <button class="btn btn-outline">Ver Detalhes</button>
                     </div>
                 </div>
 
-                <div class="portfolio-item" data-category="mobile" data-popup-id="popup5">
+                <!-- App Mobile 2 -->
+                <div class="portfolio-item" data-category="mobile" onclick="openPopup('popup5')">
                     <div class="portfolio-image">
                         <i class="fas fa-dumbbell"></i>
                     </div>
@@ -315,11 +332,12 @@
                             <span class="portfolio-tag">FastAPI</span>
                             <span class="portfolio-tag">IA</span>
                         </div>
-                        <button class="btn btn-outline btn-popup-details">Ver Detalhes</button>
+                        <button class="btn btn-outline">Ver Detalhes</button>
                     </div>
                 </div>
 
-                <div class="portfolio-item" data-category="ai" data-popup-id="popup6">
+                <!-- IA & Automação 2 -->
+                <div class="portfolio-item" data-category="ai" onclick="openPopup('popup6')">
                     <div class="portfolio-image">
                         <i class="fas fa-cogs"></i>
                     </div>
@@ -335,34 +353,669 @@
                             <span class="portfolio-tag">IA</span>
                             <span class="portfolio-tag">Automação</span>
                         </div>
-                        <button class="btn btn-outline btn-popup-details">Ver Detalhes</button>
+                        <button class="btn btn-outline">Ver Detalhes</button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Popups do Portfólio -->
+    <!-- Popup 1 - E-commerce Inteligente -->
     <div class="popup-overlay" id="popup1">
         <div class="popup-container">
             <button class="popup-close" onclick="closePopup('popup1')">
                 <i class="fas fa-times"></i>
             </button>
-            <div class="popup-actions">
-                <button class="btn btn-outline" onclick="closePopup('popup1')">
-                    <i class="fas fa-times"></i>
-                    Fechar
-                </button>
+
+            <div class="popup-header">
+                <div class="popup-badge">
+                    <i class="fas fa-shopping-cart"></i>
+                    Sistema Web & IA
                 </div>
+                <h2 class="popup-title">E-commerce Inteligente</h2>
+                <p class="popup-subtitle">
+                    Plataforma completa de e-commerce com sistema de recomendações baseado em IA,
+                    automação de marketing e análise preditiva de vendas.
+                </p>
+            </div>
+
+            <div class="popup-content">
+                <div class="popup-grid">
+                    <div class="popup-image">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+
+                    <div class="popup-details">
+                        <div class="detail-group">
+                            <h4>Tecnologias Utilizadas</h4>
+                            <div class="tech-stack">
+                                <span class="tech-item">HTML5/CSS3</span>
+                                <span class="tech-item">JavaScript</span>
+                                <span class="tech-item">Python</span>
+                                <span class="tech-item">FastAPI</span>
+                                <span class="tech-item">MongoDB</span>
+                                <span class="tech-item">Machine Learning</span>
+                            </div>
+                        </div>
+
+                        <div class="detail-group">
+                            <h4>Funcionalidades Principais</h4>
+                            <ul class="detail-list">
+                                <li>Sistema de recomendações personalizadas com IA</li>
+                                <li>Catálogo dinâmico com filtros inteligentes</li>
+                                <li>Carrinho de compras persistente</li>
+                                <li>Checkout com múltiplos gateways de pagamento</li>
+                                <li>Dashboard administrativo em tempo real</li>
+                                <li>Relatórios preditivos de vendas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="popup-features">
+                    <h4 style="margin-bottom: 20px; color: var(--dark);">Diferenciais Tecnológicos</h4>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>IA para Recomendações</h5>
+                                <p>Algoritmos de machine learning para sugestões personalizadas</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Performance Otimizada</h5>
+                                <p>Carregamento ultrarrápido com FastAPI e MongoDB</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Analytics em Tempo Real</h5>
+                                <p>Monitoramento contínuo de métricas e conversões</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Design Responsivo</h5>
+                                <p>Experiência perfeita em todos os dispositivos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="popup-actions">
+                    <button class="btn btn-outline" onclick="closePopup('popup1')">
+                        <i class="fas fa-times"></i>
+                        Fechar
+                    </button>
+                    <a href="https://wa.me/5531997542811?text=Olá! Tenho interesse em desenvolver um E-commerce Inteligente como o do portfólio. Podemos conversar?"
+                        class="btn btn-whatsapp" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Solicitar Projeto Similar
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
-    
-    <div class="popup-overlay" id="popup2">... Conteúdo do Popup 2 ... <button class="popup-close" onclick="closePopup('popup2')">...</button></div>
-    <div class="popup-overlay" id="popup3">... Conteúdo do Popup 3 ... <button class="popup-close" onclick="closePopup('popup3')">...</button></div>
-    <div class="popup-overlay" id="popup4">... Conteúdo do Popup 4 ... <button class="popup-close" onclick="closePopup('popup4')">...</button></div>
-    <div class="popup-overlay" id="popup5">... Conteúdo do Popup 5 ... <button class="popup-close" onclick="closePopup('popup5')">...</button></div>
-    <div class="popup-overlay" id="popup6">... Conteúdo do Popup 6 ... <button class="popup-close" onclick="closePopup('popup6')">...</button></div>
 
+    <!-- Popup 2 - App Gestão Financeira -->
+    <div class="popup-overlay" id="popup2">
+        <div class="popup-container">
+            <button class="popup-close" onclick="closePopup('popup2')">
+                <i class="fas fa-times"></i>
+            </button>
 
+            <div class="popup-header">
+                <div class="popup-badge">
+                    <i class="fas fa-mobile-alt"></i>
+                    Mobile App & IA
+                </div>
+                <h2 class="popup-title">App de Gestão Financeira</h2>
+                <p class="popup-subtitle">
+                    Aplicativo mobile completo para controle financeiro pessoal com insights automáticos,
+                    orçamento inteligente e previsões baseadas em machine learning.
+                </p>
+            </div>
+
+            <div class="popup-content">
+                <div class="popup-grid">
+                    <div class="popup-image">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+
+                    <div class="popup-details">
+                        <div class="detail-group">
+                            <h4>Tecnologias Utilizadas</h4>
+                            <div class="tech-stack">
+                                <span class="tech-item">Flutter</span>
+                                <span class="tech-item">Dart</span>
+                                <span class="tech-item">FastAPI</span>
+                                <span class="tech-item">MongoDB</span>
+                                <span class="tech-item">Python</span>
+                                <span class="tech-item">Machine Learning</span>
+                            </div>
+                        </div>
+
+                        <div class="detail-group">
+                            <h4>Funcionalidades Principais</h4>
+                            <ul class="detail-list">
+                                <li>Controle de receitas e despesas em tempo real</li>
+                                <li>Orçamento personalizado com IA</li>
+                                <li>Previsões financeiras baseadas em histórico</li>
+                                <li>Relatórios visuais e gráficos interativos</li>
+                                <li>Metas financeiras com acompanhamento</li>
+                                <li>Backup automático na nuvem</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="popup-features">
+                    <h4 style="margin-bottom: 20px; color: var(--dark);">Vantagens do App</h4>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Insights Automáticos</h5>
+                                <p>IA identifica padrões e sugere economias</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-sync"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Sincronização em Nuvem</h5>
+                                <p>Dados seguros e acessíveis em todos os dispositivos</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Visualização de Dados</h5>
+                                <p>Gráficos interativos e relatórios detalhados</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Alertas Inteligentes</h5>
+                                <p>Notificações proativas sobre gastos e metas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="popup-actions">
+                    <button class="btn btn-outline" onclick="closePopup('popup2')">
+                        <i class="fas fa-times"></i>
+                        Fechar
+                    </button>
+                    <a href="https://wa.me/5531997542811?text=Olá! Gostaria de desenvolver um App de Gestão Financeira como o do portfólio. Podemos conversar?"
+                        class="btn btn-whatsapp" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Solicitar Projeto Similar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup 3 - ChatBot Empresarial -->
+    <div class="popup-overlay" id="popup3">
+        <div class="popup-container">
+            <button class="popup-close" onclick="closePopup('popup3')">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="popup-header">
+                <div class="popup-badge">
+                    <i class="fas fa-robot"></i>
+                    IA & Automação
+                </div>
+                <h2 class="popup-title">ChatBot Empresarial Inteligente</h2>
+                <p class="popup-subtitle">
+                    Assistente virtual avançado para atendimento ao cliente, suporte técnico e
+                    automação de processos internos com processamento de linguagem natural.
+                </p>
+            </div>
+
+            <div class="popup-content">
+                <div class="popup-grid">
+                    <div class="popup-image">
+                        <i class="fas fa-robot"></i>
+                    </div>
+
+                    <div class="popup-details">
+                        <div class="detail-group">
+                            <h4>Tecnologias Utilizadas</h4>
+                            <div class="tech-stack">
+                                <span class="tech-item">Python</span>
+                                <span class="tech-item">FastAPI</span>
+                                <span class="tech-item">MongoDB</span>
+                                <span class="tech-item">NLP</span>
+                                <span class="tech-item">Machine Learning</span>
+                                <span class="tech-item">WebSocket</span>
+                            </div>
+                        </div>
+
+                        <div class="detail-group">
+                            <h4>Funcionalidades Principais</h4>
+                            <ul class="detail-list">
+                                <li>Processamento de linguagem natural (NLP)</li>
+                                <li>Respostas contextuais e aprendizado contínuo</li>
+                                <li>Integração com múltiplos canais (WhatsApp, Web, Telegram)</li>
+                                <li>Análise de sentimentos do cliente</li>
+                                <li>Escalamento automático para atendimento humano</li>
+                                <li>Relatórios de desempenho e métricas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="popup-features">
+                    <h4 style="margin-bottom: 20px; color: var(--dark);">Capacidades do ChatBot</h4>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Conversas Naturais</h5>
+                                <p>NLP avançado para diálogos fluidos e contextuais</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Aprendizado Contínuo</h5>
+                                <p>Melhora constantemente com base nas interações</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-plug"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Integrações Múltiplas</h5>
+                                <p>Conecta com CRM, ERP e outros sistemas</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Analytics Avançado</h5>
+                                <p>Métricas detalhadas de desempenho e satisfação</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="popup-actions">
+                    <button class="btn btn-outline" onclick="closePopup('popup3')">
+                        <i class="fas fa-times"></i>
+                        Fechar
+                    </button>
+                    <a href="https://wa.me/5531997542811?text=Olá! Tenho interesse em um ChatBot Empresarial como o do portfólio. Podemos conversar?"
+                        class="btn btn-whatsapp" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Solicitar Projeto Similar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup 4 - Dashboard Analytics -->
+    <div class="popup-overlay" id="popup4">
+        <div class="popup-container">
+            <button class="popup-close" onclick="closePopup('popup4')">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="popup-header">
+                <div class="popup-badge">
+                    <i class="fas fa-chart-line"></i>
+                    Sistema Web & Analytics
+                </div>
+                <h2 class="popup-title">Dashboard Analytics em Tempo Real</h2>
+                <p class="popup-subtitle">
+                    Plataforma avançada de análise de dados com visualizações interativas,
+                    relatórios automáticos e monitoramento em tempo real de métricas empresariais.
+                </p>
+            </div>
+
+            <div class="popup-content">
+                <div class="popup-grid">
+                    <div class="popup-image">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+
+                    <div class="popup-details">
+                        <div class="detail-group">
+                            <h4>Tecnologias Utilizadas</h4>
+                            <div class="tech-stack">
+                                <span class="tech-item">HTML5/CSS3</span>
+                                <span class="tech-item">JavaScript</span>
+                                <span class="tech-item">Python</span>
+                                <span class="tech-item">FastAPI</span>
+                                <span class="tech-item">MongoDB</span>
+                                <span class="tech-item">Chart.js</span>
+                            </div>
+                        </div>
+
+                        <div class="detail-group">
+                            <h4>Funcionalidades Principais</h4>
+                            <ul class="detail-list">
+                                <li>Visualizações de dados em tempo real</li>
+                                <li>Gráficos interativos e personalizáveis</li>
+                                <li>Relatórios automáticos agendados</li>
+                                <li>Alertas inteligentes de métricas</li>
+                                <li>Exportação de dados em múltiplos formatos</li>
+                                <li>Dashboard responsivo para todos os dispositivos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="popup-features">
+                    <h4 style="margin-bottom: 20px; color: var(--dark);">Recursos Avançados</h4>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Tempo Real</h5>
+                                <p>Atualização instantânea de dados e métricas</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-filter"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Filtros Avançados</h5>
+                                <p>Segmentação de dados por múltiplos critérios</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Design Responsivo</h5>
+                                <p>Experiência otimizada para mobile e desktop</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-share-alt"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Compartilhamento</h5>
+                                <p>Relatórios compartilháveis com stakeholders</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="popup-actions">
+                    <button class="btn btn-outline" onclick="closePopup('popup4')">
+                        <i class="fas fa-times"></i>
+                        Fechar
+                    </button>
+                    <a href="https://wa.me/5531997542811?text=Olá! Gostaria de um Dashboard Analytics como o do portfólio. Podemos conversar?"
+                        class="btn btn-whatsapp" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Solicitar Projeto Similar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup 5 - App Fitness AI -->
+    <div class="popup-overlay" id="popup5">
+        <div class="popup-container">
+            <button class="popup-close" onclick="closePopup('popup5')">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="popup-header">
+                <div class="popup-badge">
+                    <i class="fas fa-dumbbell"></i>
+                    Mobile App & IA
+                </div>
+                <h2 class="popup-title">Fitness AI - Personal Trainer Digital</h2>
+                <p class="popup-subtitle">
+                    Aplicativo de fitness inteligente que cria planos de treino personalizados
+                    usando IA, acompanha progresso e oferece orientações nutricionais.
+                </p>
+            </div>
+
+            <div class="popup-content">
+                <div class="popup-grid">
+                    <div class="popup-image">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+
+                    <div class="popup-details">
+                        <div class="detail-group">
+                            <h4>Tecnologias Utilizadas</h4>
+                            <div class="tech-stack">
+                                <span class="tech-item">Flutter</span>
+                                <span class="tech-item">Dart</span>
+                                <span class="tech-item">Python</span>
+                                <span class="tech-item">FastAPI</span>
+                                <span class="tech-item">MongoDB</span>
+                                <span class="tech-item">Machine Learning</span>
+                            </div>
+                        </div>
+
+                        <div class="detail-group">
+                            <h4>Funcionalidades Principais</h4>
+                            <ul class="detail-list">
+                                <li>Planos de treino personalizados por IA</li>
+                                <li>Acompanhamento de progresso com gráficos</li>
+                                <li>Recomendações nutricionais inteligentes</li>
+                                <li>Integração com wearables e health apps</li>
+                                <li>Comunidade e desafios fitness</li>
+                                <li>Lembretes e notificações personalizadas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="popup-features">
+                    <h4 style="margin-bottom: 20px; color: var(--dark);">Diferenciais do App</h4>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>IA Personalizada</h5>
+                                <p>Algoritmos que adaptam treinos ao seu progresso</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Saúde Integrada</h5>
+                                <p>Conexão com Apple Health e Google Fit</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Video Aulas</h5>
+                                <p>Instruções em vídeo para todos os exercícios</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Gamificação</h5>
+                                <p>Sistema de conquistas e recompensas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="popup-actions">
+                    <button class="btn btn-outline" onclick="closePopup('popup5')">
+                        <i class="fas fa-times"></i>
+                        Fechar
+                    </button>
+                    <a href="https://wa.me/5531997542811?text=Olá! Tenho interesse em um App de Fitness com IA como o do portfólio. Podemos conversar?"
+                        class="btn btn-whatsapp" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Solicitar Projeto Similar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup 6 - Sistema de Automação -->
+    <div class="popup-overlay" id="popup6">
+        <div class="popup-container">
+            <button class="popup-close" onclick="closePopup('popup6')">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="popup-header">
+                <div class="popup-badge">
+                    <i class="fas fa-cogs"></i>
+                    IA & Automação Empresarial
+                </div>
+                <h2 class="popup-title">Sistema de Automação de Processos</h2>
+                <p class="popup-subtitle">
+                    Plataforma completa de automação empresarial com machine learning
+                    para otimização de workflows, redução de custos e aumento de eficiência.
+                </p>
+            </div>
+
+            <div class="popup-content">
+                <div class="popup-grid">
+                    <div class="popup-image">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+
+                    <div class="popup-details">
+                        <div class="detail-group">
+                            <h4>Tecnologias Utilizadas</h4>
+                            <div class="tech-stack">
+                                <span class="tech-item">Python</span>
+                                <span class="tech-item">FastAPI</span>
+                                <span class="tech-item">MongoDB</span>
+                                <span class="tech-item">Machine Learning</span>
+                                <span class="tech-item">RPA</span>
+                                <span class="tech-item">Docker</span>
+                            </div>
+                        </div>
+
+                        <div class="detail-group">
+                            <h4>Funcionalidades Principais</h4>
+                            <ul class="detail-list">
+                                <li>Automação de workflows empresariais</li>
+                                <li>Integração com sistemas legados</li>
+                                <li>Processamento inteligente de documentos</li>
+                                <li>Relatórios de performance e eficiência</li>
+                                <li>Alertas proativos de anomalias</li>
+                                <li>Dashboard de monitoramento em tempo real</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="popup-features">
+                    <h4 style="margin-bottom: 20px; color: var(--dark);">Benefícios da Automação</h4>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Economia de Tempo</h5>
+                                <p>Redução de até 80% em tarefas manuais</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Maior Eficiência</h5>
+                                <p>Processos otimizados e padronizados</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Redução de Erros</h5>
+                                <p>Minimização de falhas humanas</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-expand-arrows-alt"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Escalabilidade</h5>
+                                <p>Crescimento sem aumento proporcional de custos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="popup-actions">
+                    <button class="btn btn-outline" onclick="closePopup('popup6')">
+                        <i class="fas fa-times"></i>
+                        Fechar
+                    </button>
+                    <a href="https://wa.me/5531997542811?text=Olá! Gostaria de um Sistema de Automação como o do portfólio. Podemos conversar?"
+                        class="btn btn-whatsapp" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Solicitar Projeto Similar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Process Section -->
     <section class="section process" id="process">
         <div class="container">
             <div class="section-header">
@@ -417,6 +1070,7 @@
         </div>
     </section>
 
+    <!-- CTA Section -->
     <section class="cta" id="cta">
         <div class="container">
             <div class="cta-content">
@@ -434,6 +1088,7 @@
         </div>
     </section>
 
+    <!-- Footer -->
     <footer id="contact">
         <div class="container">
             <div class="footer-grid">
@@ -496,7 +1151,9 @@
         </div>
     </footer>
 
+    <!-- JavaScript -->
     <script src="js/main.js"></script>
+    <script src="js/portfolio.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/chat-websocket.js"></script>
     <script src="js/chat-ia.js"></script>
