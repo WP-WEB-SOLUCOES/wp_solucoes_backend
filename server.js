@@ -304,7 +304,7 @@ app.post('/admin/login', loginLimiter, async (req, res) => {
                 secure: IS_PRODUCTION, // Só será true em produção
                 sameSite: 'strict',
                 maxAge: 3600 * 1000,
-                path: '/admin'
+                path: '/'
             });
 
             res.json({
@@ -329,7 +329,7 @@ app.get('/admin/logout', (req, res) => {
         httpOnly: true,
         secure: IS_PRODUCTION, // Só será true em produção
         sameSite: 'strict',
-        path: '/admin' 
+        path: '/' 
     });
     res.json({ success: true, message: 'Logout efetuado com sucesso.' });
 });
