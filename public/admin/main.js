@@ -27,7 +27,7 @@ const attendantRole = sessionStorage.getItem('atendenteRole') || 'atendente';
 // =======================================================
 document.addEventListener('DOMContentLoaded', () => {
     if (!sessionStorage.getItem('atendenteUser')) {
-        window.location.href = 'login.html';
+        window.location.href = '/admin/login';
         return;
     }
     
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             sessionStorage.removeItem('atendenteUser');
             sessionStorage.removeItem('atendenteRole');
-            window.location.href = 'login.html';
+            window.location.href = '/admin/login';
         });
     }
 
@@ -99,7 +99,7 @@ async function loadPage(pageName) {
 
         if (!response.ok) {
             if (response.status === 401 || response.status === 403) {
-                 window.location.href = 'login.html';
+                 window.location.href = '/admin/login';
                  return;
             }
             throw new Error(`Página não encontrada: ${pageName}`);
@@ -221,7 +221,7 @@ function initializeSocket() {
         alert('Sua sessão expirou ou é inválida. Por favor, faça login novamente.');
         sessionStorage.removeItem('atendenteUser');
         sessionStorage.removeItem('atendenteRole');
-        window.location.href = 'login.html';
+        window.location.href = '/admin/login';
     });
     
     socket.on('message_error', (data) => {
@@ -238,7 +238,7 @@ function initializeSocket() {
             console.log('Desconectado pelo servidor (provavelmente auth).');
             sessionStorage.removeItem('atendenteUser');
             sessionStorage.removeItem('atendenteRole');
-            window.location.href = 'login.html';
+            window.location.href = '/admin/login';
         }
         console.log('Desconectado do servidor. Razão:', reason);
     });
@@ -335,7 +335,7 @@ async function initHistoricoPage() {
         const response = await fetch('/api/chat/history', { credentials: 'include' });
         if (!response.ok) {
             if(response.status === 401 || response.status === 403) {
-                 window.location.href = 'login.html';
+                 window.location.href = '/admin/login';
                  return;
             }
             throw new Error('Falha ao buscar histórico.');
@@ -1063,7 +1063,7 @@ function setupAdminModal() {
                 } else {
                     if(response.status === 401 || response.status === 403) {
                          alert("Sua sessão expirou ou você não tem permissão.");
-                         window.location.href = 'login.html';
+                         window.location.href = '/admin/login';
                     }
                     registerMessage.textContent = data.message || 'Erro ao registrar.';
                     registerMessage.classList.add('error');

@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Espera um segundo e redireciona para o dashboard
                 setTimeout(() => {
-                    window.location.href = 'main.html';
+                    window.location.href = '/admin';
                 }, 1000);
 
             } else {
