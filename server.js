@@ -21,7 +21,7 @@ const { exec } = require('child_process');
 // --- Configuração Principal (Carregada do .env) ---
 const MONGO_URI = process.env.MONGO_URI;
 const PORT = process.env.PORT || 3000;
-const HOST = 'localhost';
+const HOST = process.env.HOST || '0.0.0.0'; // Mudei para 0.0.0.0 para ser acessível externamente
 const JWT_SECRET = process.env.JWT_SECRET;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
@@ -29,8 +29,8 @@ const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
 // Validação de configuração
 if (!MONGO_URI || !JWT_SECRET || !GROQ_API_KEY || !WEBHOOK_SECRET) {
-    console.error("Erro: Variáveis de ambiente (MONGO_URI, JWT_SECRET, GROQ_API_KEY, WEBHOOK_SECRET) não estão definidas.");
-    process.exit(1);
+    console.error("Erro: Variáveis de ambiente (MONGO_URI, JWT_SECRET, GROQ_API_KEY, WEBHOOK_SECRET) não estão definidas.");
+    process.exit(1);
 }
 
 const groq = new Groq({ apiKey: GROQ_API_KEY });
@@ -169,32 +169,31 @@ mongoose.connect(MONGO_URI)
 const app = express();
 
 // =======================================================
-// 6.5 ROTA DE AUTO-DEPLOY (GITHUB WEBHOOK) - VERSÃO SEGURA
+// 6.5 ROTA DE AUTO-DEPLOY (GITHUB WEBHOOK)
 // =======================================================
+// Usamos express.raw() para o webhook ANTES do express.json()
 app.post('/github-webhook', express.raw({ type: 'application/json' }), (req, res) => {
-    console.log('Webhook do GitHub recebido...');
+    console.log('Webhook do GitHub recebido...');
 
-    try {
-        // 1. Verificar o Segredo
-        const signature = req.get('X-Hub-Signature-256');
-        if (!signature) {
-            console.warn('Webhook rejeitado: Sem assinatura.');
-            return res.status(401).send('Assinatura X-Hub-Signature-256 é obrigatória.');
-        }
+    try {
+        // 1. Verificar o Segredo
+        const signature = req.get('X-Hub-Signature-256');
+        if (!signature) {
+            console.warn('Webhook rejeitado: Sem assinatura.');
+            return res.status(401).send('Assinatura X-Hub-Signature-256 é obrigatória.');
+        }
 
-        const hmac = crypto.createHmac('sha256', WEBHOOK_SECRET);
-        const digest = 'sha256=' + hmac.update(req.body).digest('hex');
+        const hmac = crypto.createHmac('sha256', WEBHOOK_SECRET);
+        const digest = 'sha256=' + hmac.update(req.body).digest('hex');
 
-        if (!crypto.timingSafeEqual(Buffer.from(digest), Buffer.from(signature))) {
-            console.warn('Webhook rejeitado: Assinatura inválida.');
-            return res.status(401).send('Assinatura inválida.');
-        }
+        if (!crypto.timingSafeEqual(Buffer.from(digest), Buffer.from(signature))) {
+            console.warn('Webhook rejeitado: Assinatura inválida.');
+            return res.status(401).send('Assinatura inválida.');
+        }
 
-        // 2. Verificar o Evento
-        const event = req.get('X-GitHub-Event');
+        // 2. Verificar o Evento
+        const event = req.get('X-GitHub-Event');
         const data = JSON.parse(req.body.toString());
-
-        // --- LÓGICA DE EVENTOS ---
 
         // A. Se for o evento "ping" (teste do GitHub)
         if (event === 'ping') {
@@ -202,42 +201,43 @@ app.post('/github-webhook', express.raw({ type: 'application/json' }), (req, res
             return res.status(200).send('Ping recebido com sucesso.');
         }
 
-        // B. Se for um push para a branch 'main'
-        if (event === 'push' && data.ref === 'refs/heads/main') {
-            console.log('Push para a branch [main] detectado. Iniciando deploy...');
-            res.status(202).send('Deploy iniciado.'); // Responde ao GitHub primeiro
+        // B. Se for um push para a branch 'main'
+        if (event === 'push' && data.ref === 'refs/heads/main') {
+            console.log('Push para a branch [main] detectado. Iniciando deploy...');
+            res.status(202).send('Deploy iniciado.'); // Responde ao GitHub primeiro
 
-            // Executa o script
-            const deployScript = path.join(__dirname, 'deploy.sh');
-            exec(`sh ${deployScript}`, (error, stdout, stderr) => {
-                if (error) {
-                    console.error(`Erro ao executar deploy.sh: ${error.message}`);
-                    return;
-                }
-                if (stderr) {
-                    console.error(`Stderr do deploy.sh: ${stderr}`);
-                    return;
-                }
-                console.log(`Stdout do deploy.sh: \n${stdout}`);
-            });
+            // Executa o script
+            const deployScript = path.join(__dirname, 'deploy.sh');
+            exec(`sh ${deployScript}`, (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`Erro ao executar deploy.sh: ${error.message}`);
+                    return;
+                }
+                if (stderr) {
+                    console.error(`Stderr do deploy.sh: ${stderr}`);
+                    return;
+                }
+                console.log(`Stdout do deploy.sh: \n${stdout}`);
+            });
 
-        } else {
-            console.log('Webhook recebido, mas não é um push para a [main]. Ignorando.');
-            res.status(200).send('Evento recebido, mas ignorado.');
-        }
+        } else {
+            console.log('Webhook recebido, mas não é um push para a [main]. Ignorando.');
+            res.status(200).send('Evento recebido, mas ignorado.');
+        }
 
-    } catch (error) {
-        console.error('Erro GERAL na rota /github-webhook:', error.message);
-        res.status(500).send('Internal Server Error');
-    }
+    } catch (error) {
+        console.error('Erro GERAL na rota /github-webhook:', error.message);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
+// Middlewares Padrão (DEPOIS do webhook raw)
 app.use(express.json());
 app.use(cookieParser());
 
 // --- Middleware de Segurança Helmet ---
-app.use(
-  helmet({ 
+// <<< CORREÇÃO CRÍTICA >>>
+const helmetConfig = { 
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"], 
@@ -258,18 +258,21 @@ app.use(
         frameSrc: ["'none'"], 
         objectSrc: ["'none'"], 
       },
-    },
-    // <<< ESTA É A CORREÇÃO CRÍTICA >>>
-    // Desliga o HSTS se não estiver em produção
-    hsts: IS_PRODUCTION 
-      ? { maxAge: 31536000, includeSubDomains: true, preload: true }
-      : false 
-  })
-);
+    }
+};
+// Só adiciona HSTS se estiver em produção
+if (IS_PRODUCTION) {
+    helmetConfig.hsts = {
+        maxAge: 31536000, // 1 ano
+        includeSubDomains: true,
+        preload: true
+    };
+}
+app.use(helmet(helmetConfig));
+// <<< FIM DA CORREÇÃO >>>
 
-app.use(express.static(path.join(__dirname, 'public')));
 
-// --- Rotas Públicas ---
+// --- Rotas Públicas de PÁGINA (Antes do 'static') ---
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
@@ -278,7 +281,6 @@ app.get('/admin/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin', 'login.html'));
 });
 
-// Rota principal do Admin (serve o 'shell' main.html)
 app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin', 'main.html'));
 });
@@ -314,17 +316,21 @@ app.post('/admin/login', loginLimiter, async (req, res) => {
                 JWT_SECRET,
                 { expiresIn: '1h' }
             );
+
+            // <<< CORREÇÃO CRÍTICA >>>
             res.cookie('token', token, {
                 httpOnly: true,
-                secure: IS_PRODUCTION, // <-- Só será true em produção
+                secure: IS_PRODUCTION, // Só será true em produção
                 sameSite: 'strict',
                 maxAge: 3600 * 1000,
-                path: '/admin' // <-- Correção do bug "offline"
+                path: '/admin'
             });
+
             res.json({
                 success: true,
                 user: { username: user.username, role: user.role }
             });
+
         } else {
             console.warn(`Tentativa de login falha para ${username}`);
             res.status(401).json({ success: false, message: 'Usuário ou senha inválidos.' });
@@ -337,11 +343,12 @@ app.post('/admin/login', loginLimiter, async (req, res) => {
 
 // --- Rota de Logout (Limpa o Cookie) ---
 app.get('/admin/logout', (req, res) => {
+    // <<< CORREÇÃO CRÍTICA >>>
     res.clearCookie('token', {
         httpOnly: true,
-        secure: IS_PRODUCTION, // <-- Só será true em produção
+        secure: IS_PRODUCTION, // Só será true em produção
         sameSite: 'strict',
-        path: '/admin' // <-- Correção do bug "offline"
+        path: '/admin' 
     });
     res.json({ success: true, message: 'Logout efetuado com sucesso.' });
 });
@@ -423,7 +430,7 @@ const verifyAdmin = (req, res, next) => {
     const token = req.cookies.token;
     if (!token) {
         if (req.path.startsWith('/pages/')) {
-            return res.redirect('/admin/login');
+            return res.redirect('/admin/login'); // Rota limpa
         }
         return res.status(401).json({ success: false, message: 'Token não fornecido.' });
     }
@@ -444,7 +451,7 @@ const verifyAdmin = (req, res, next) => {
         }
     } catch (error) {
         if (req.path.startsWith('/pages/')) {
-            return res.redirect('/admin/login');
+            return res.redirect('/admin/login'); // Rota limpa
         }
         return res.status(401).json({ success: false, message: 'Token inválido ou expirado.' });
     }
@@ -547,6 +554,10 @@ Mensagem: ${clientData.message || 'Sem mensagem adicional'}`;
     }
 });
 
+// --- Servidor de Arquivos Estáticos (DEVE VIR POR ÚLTIMO) ---
+app.use(express.static(path.join(__dirname, 'public')));
+
+
 // --- Middleware de Autenticação do Socket.io ---
 io.use((socket, next) => {
     const cookieString = socket.handshake.headers.cookie;
@@ -609,7 +620,7 @@ io.on('connection', (socket) => {
     socket.on('client_join', async (data) => {
         if (socket.user) return;
         const { sessionId } = data;
-        if (!sessionId) return; // Adiciona verificação
+        if (!sessionId) return;
         try {
             let session = await ChatSession.findOne({ sessionId });
             if (!session) {
@@ -678,7 +689,6 @@ io.on('connection', (socket) => {
         const isAdmin = (attendantRole === 'admin');
         let needsToNotifyClient = false;
         let needsToUpdateDB = false;
-
         if (isUnassigned) {
             client.session.assignedTo = attendantName;
             client.session.status = 'in_progress';
