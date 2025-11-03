@@ -1,0 +1,710 @@
+/* ==========================================================================
+   RESET RESPONSIVO - MOBILE FIRST
+   ========================================================================== */
+
+/* Reset para prevenir overflow */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+/* ==========================================================================
+   CORREÇÕES CRÍTICAS PARA MOBILE
+   ========================================================================== */
+@media (max-width: 767px) {
+    /* Garante que nenhum elemento ultrapasse a tela */
+    .container {
+        width: 100%;
+        padding: 0 16px;
+    }
+
+    .mobile-toggle{
+        display: block;
+    }
+    
+    /* Force todos os grids para 1 coluna */
+    .features-grid,
+    .services-grid,
+    .portfolio-grid,
+    .footer-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px;
+        width: 100%;
+    }
+    
+    /* Previne overflow em textos longos */
+    .hero-title,
+    .section-title,
+    .hero-subtitle,
+    .section-subtitle {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+    
+    /* Limita largura máxima dos elementos */
+    .feature-card,
+    .service-card,
+    .portfolio-item,
+    .process-step {
+        max-width: 100%;
+        width: 100%;
+    }
+    
+    /* Corrige flexbox que pode causar overflow */
+    .hero-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+    }
+    
+    .hero-actions .btn {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    /* Navigation mobile fix */
+    .nav-actions {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: var(--accent);
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-top: 80px;
+        transition: right 0.3s ease;
+        box-shadow: -5px 0 20px rgba(33, 33, 33, 0.1);
+    }
+    
+    .nav-actions.active {
+        right: 0;
+    }
+    
+    .nav-actions .btn {
+        width: 200px;
+        justify-content: center;
+    }
+    
+    /* Process steps em coluna */
+    .process-step,
+    .process-step:nth-child(even) {
+        flex-direction: column;
+        text-align: center;
+        width: 100%;
+    }
+    
+    .step-number {
+        margin: 0 auto 15px;
+    }
+    
+    /* Ajuste de padding nas sections */
+    section {
+        padding: 60px 0;
+        width: 100%;
+    }
+    
+    /* Corrige portfolio tabs */
+    .portfolio-tabs {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+    }
+    
+    .portfolio-tab {
+        width: 100%;
+        max-width: 250px;
+    }
+    
+    /* Corrige popups */
+    .popup-container {
+        margin: 0 16px;
+        width: calc(100vw - 32px) !important;
+        max-width: calc(100vw - 32px) !important;
+    }
+}
+
+/* ==========================================================================
+   SMALL MOBILE (480px para baixo) - CORREÇÕES ESPECÍFICAS
+   ========================================================================== */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 12px;
+    }
+    
+    /* Tipografia mais compacta */
+    .hero-title {
+        font-size: 1.8rem;
+        line-height: 1.2;
+    }
+    
+    .section-title {
+        font-size: 1.6rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    section {
+        padding: 50px 0;
+    }
+    
+    /* Cards mais compactos */
+    .feature-card,
+    .service-card {
+        padding: 20px;
+        margin: 0;
+    }
+    
+    /* Chat menor em mobile muito pequeno */
+    .chat-container {
+        width: calc(100vw - 24px) !important;
+        right: 12px !important;
+        max-width: calc(100vw - 24px) !important;
+    }
+    
+    /* Corrige imagens */
+    .logo-image {
+        max-width: 40px !important;
+    }
+    
+    /* Force single column em tudo */
+    .features-grid,
+    .services-grid,
+    .portfolio-grid,
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+}
+
+/* ==========================================================================
+   TABLET (768px para cima)
+   ========================================================================== */
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+        padding: 0 20px;
+    }
+    
+    /* Header */
+    .nav-container {
+        padding: 15px 0;
+    }
+    
+    /* Hero */
+    .hero-title {
+        font-size: 2.8rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    /* Grids - 2 colunas */
+    .features-grid,
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+    
+    .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+    
+    /* Process */
+    .process-step {
+        flex-direction: row;
+        text-align: left;
+    }
+    
+    .process-step:nth-child(even) {
+        flex-direction: row-reverse;
+        text-align: right;
+    }
+    
+    .step-number {
+        margin: 0 20px 0 0;
+    }
+    
+    .process-step:nth-child(even) .step-number {
+        margin: 0 0 0 20px;
+    }
+    
+    /* Footer */
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+}
+
+/* ==========================================================================
+   DESKTOP (1024px para cima)
+   ========================================================================== */
+@media (min-width: 1024px) {
+    .container {
+        max-width: 1200px;
+        padding: 0 24px;
+    }
+    
+    /* Hero */
+    .hero-title {
+        font-size: 3.5rem;
+    }
+    
+    /* Grids - 3 colunas */
+    .features-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .services-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .portfolio-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    /* Footer */
+    .footer-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    /* Process mantém 2 colunas mas com mais espaço */
+    .process-steps {
+        max-width: 900px;
+    }
+}
+
+/* ==========================================================================
+   LARGE DESKTOP (1440px para cima)
+   ========================================================================== */
+@media (min-width: 1440px) {
+    .container {
+        max-width: 1400px;
+    }
+}
+
+/* ==========================================================================
+   CHAT RESPONSIVO CORRIGIDO
+   ========================================================================== */
+.chat-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10000;
+}
+
+.chat-container {
+    width: 350px;
+    height: 500px;
+    max-width: calc(100vw - 40px);
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+    .chat-widget {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .chat-container {
+        width: 320px;
+        height: 450px;
+        max-width: calc(100vw - 30px);
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .chat-widget {
+        bottom: 10px;
+        right: 10px;
+    }
+    
+    .chat-container {
+        width: calc(100vw - 20px);
+        height: 400px;
+        right: 10px;
+        max-width: calc(100vw - 20px);
+    }
+    
+    .chat-button {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+/* ==========================================================================
+   UTILITÁRIOS GLOBAIS CRÍTICOS
+   ========================================================================== */
+
+/* Garante que imagens sejam responsivas */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Previne overflow horizontal GLOBAL */
+body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+}
+
+/* Force box-sizing em todos os elementos */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Remove margens e paddings padrão que podem causar overflow */
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, li {
+    margin: 0;
+    padding: 0;
+}
+
+/* Melhora a experiência touch em mobile */
+@media (max-width: 768px) {
+    .btn,
+    .portfolio-tab,
+    .mobile-toggle {
+        min-height: 44px;
+    }
+    
+    /* Previne que elementos fiquem muito largos */
+    .container > * {
+        max-width: 100%;
+    }
+}
+
+/* Remove hover effects em dispositivos touch */
+@media (hover: none) {
+    .btn:hover,
+    .feature-card:hover,
+    .service-card:hover,
+    .portfolio-item:hover {
+        transform: none;
+    }
+}
+
+/* ==========================================================================
+   POPUPS RESPONSIVOS
+   ========================================================================== */
+
+/* Mobile First - Popups */
+.popup-overlay {
+    padding: 10px;
+    align-items: flex-start;
+    padding-top: 60px;
+}
+
+.popup-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+}
+
+.popup-header {
+    padding: 25px 20px 15px 20px;
+}
+
+.popup-content {
+    padding: 20px;
+}
+
+.popup-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+}
+
+.popup-image {
+    height: 200px;
+    font-size: 1.2rem;
+}
+
+.popup-title {
+    font-size: 1.5rem;
+    line-height: 1.3;
+}
+
+.popup-subtitle {
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.tech-stack {
+    gap: 8px;
+}
+
+.tech-item {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+}
+
+.popup-features {
+    padding: 20px;
+}
+
+.features-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+.feature-item {
+    gap: 12px;
+}
+
+.feature-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.1rem;
+}
+
+.popup-actions {
+    flex-direction: column;
+    gap: 10px;
+}
+
+.popup-actions .btn {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+    .popup-overlay {
+        padding: 20px;
+        align-items: center;
+        padding-top: 20px;
+    }
+    
+    .popup-container {
+        max-width: 700px;
+        max-height: 90vh;
+    }
+    
+    .popup-header {
+        padding: 30px 30px 20px 30px;
+    }
+    
+    .popup-content {
+        padding: 25px 30px;
+    }
+    
+    .popup-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+    
+    .popup-image {
+        height: 250px;
+        font-size: 1.3rem;
+    }
+    
+    .popup-title {
+        font-size: 1.8rem;
+    }
+    
+    .popup-features {
+        padding: 25px;
+    }
+    
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .popup-actions {
+        flex-direction: row;
+        gap: 15px;
+    }
+    
+    .popup-actions .btn {
+        width: auto;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .popup-container {
+        max-width: 900px;
+    }
+    
+    .popup-header {
+        padding: 40px 40px 20px 40px;
+    }
+    
+    .popup-content {
+        padding: 30px 40px;
+    }
+    
+    .popup-title {
+        font-size: 2rem;
+    }
+    
+    .popup-image {
+        height: 300px;
+        font-size: 1.5rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+}
+
+/* Small Mobile - Correções extras */
+@media (max-width: 480px) {
+    .popup-overlay {
+        padding: 5px;
+        padding-top: 50px;
+    }
+    
+    .popup-container {
+        max-height: calc(100vh - 60px);
+    }
+    
+    .popup-header {
+        padding: 20px 15px 10px 15px;
+    }
+    
+    .popup-content {
+        padding: 15px;
+    }
+    
+    .popup-title {
+        font-size: 1.3rem;
+    }
+    
+    .popup-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .popup-image {
+        height: 150px;
+        font-size: 1rem;
+    }
+    
+    .popup-features {
+        padding: 15px;
+    }
+    
+    .feature-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .feature-text h5 {
+        font-size: 0.9rem;
+    }
+    
+    .feature-text p {
+        font-size: 0.8rem;
+    }
+    
+    .tech-item {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+    }
+}
+
+/* Landscape Mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .popup-overlay {
+        padding-top: 10px;
+        align-items: flex-start;
+    }
+    
+    .popup-container {
+        max-height: calc(100vh - 20px);
+    }
+}
+
+/* Correções específicas para o botão de fechar */
+.popup-close {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    z-index: 2001;
+}
+
+@media (min-width: 768px) {
+    .popup-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+}
+
+/* Debug helper - mostra elementos que estão causando overflow */
+/* Remova esta parte em produção */
+.debug * {
+    outline: 1px solid red;
+}
+
+/* ==========================================================================
+   ESTILOS RESPONSIVOS DO MENU (MOBILE)
+   ========================================================================== */
+
+@media (max-width: 767px) {
+    /* Garante que o menu venha primeiro no mobile */
+    .nav-actions {
+        justify-content: flex-start;
+        gap: 15px; 
+        align-items: center; 
+    }
+    
+    .nav-menu {
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        gap: 10px;
+        padding: 0;
+        margin: 0;
+        /* Esta linha coloca os links ANTES dos botões no menu mobile */
+        order: -1; 
+    }
+
+    .nav-menu li {
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-link {
+        display: block;
+        padding: 15px 20px;
+        color: var(--dark);
+        font-size: 1.1rem;
+        width: 100%;
+    }
+
+    .nav-link:hover {
+        background: rgba(198, 45, 165, 0.1);
+        color: var(--primary);
+    }
+    
+    .nav-link::after {
+       display: none; /* Remove sublinhado no mobile */
+    }
+}

@@ -1,0 +1,1183 @@
+/* =======================================================
+ * CSS para o Chat Widget (ChatIA.js)
+ * ======================================================= */
+
+/* :root {
+    --primary: #c62da5;
+    --primary-dark: #a8258c;
+    --light: #f8f9fa;
+    --light-gray: #e9ecef;
+    --dark: #212121;
+    --gray: #6c757d;
+    --gradient: linear-gradient(135deg, var(--primary), #da4178);
+    --shadow: 0 10px 30px rgba(198, 45, 165, 0.15);
+    --transition: all 0.3s ease;
+    --border-radius: 15px;
+} */
+
+/* Importa fontes do seu site principal */
+.chat-widget,
+.chat-widget button,
+.chat-widget input,
+.chat-widget textarea,
+.chat-widget select {
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+}
+
+/* --- 1. Posicionamento do Botão e Janela --- */
+
+/* O botão flutuante para abrir o chat */
+.chat-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: var(--gradient);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.chat-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 30px rgba(198, 45, 165, 0.3);
+}
+
+/* Animação de pulso */
+@keyframes pulse-animation {
+    0% { box-shadow: 0 0 0 0 rgba(198, 45, 165, 0.7); }
+    70% { box-shadow: 0 0 0 20px rgba(198, 45, 165, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(198, 45, 165, 0); }
+}
+.chat-button.pulse {
+    animation: pulse-animation 2s infinite;
+}
+
+/* A janela principal do chat */
+.chat-container {
+    position: fixed;
+    bottom: 90px; /* Acima do botão */
+    right: 20px;
+    width: 500px;
+    height: 60%;
+    background: #ffffff;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    
+    /* Lógica de esconder/mostrar */
+    opacity: 0;
+    transform: translateY(20px);
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 9999;
+}
+
+.chat-container.active {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+}
+
+/* --- 2. Cabeçalho do Chat --- */
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: var(--gradient);
+    color: white;
+    flex-shrink: 0;
+}
+
+.chat-header-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.chat-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.chat-agent-info h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.chat-agent-info p {
+    margin: 0;
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.chat-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: var(--transition);
+}
+
+.chat-close:hover {
+    opacity: 1;
+    transform: rotate(90deg);
+}
+
+/* --- 3. Área de Mensagens --- */
+.chat-messages {
+    flex: 1; /* Ocupa todo o espaço */
+    padding: 20px;
+    overflow-y: auto;
+    background: var(--light);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Estilização da barra de rolagem */
+.chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+.chat-messages::-webkit-scrollbar-track {
+    background: var(--light-gray);
+}
+
+/* Bolhas de mensagem */
+.message {
+    display: flex;
+    flex-direction: column;
+    max-width: 85%;
+}
+
+.message-text {
+    padding: 12px 18px;
+    border-radius: 18px;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+/* Formatação do texto (negrito, itálico) */
+.message-text strong {
+    color: var(--primary);
+}
+.message-text a {
+    color: var(--primary);
+    text-decoration: underline;
+}
+
+.message-time {
+    font-size: 0.75rem;
+    color: var(--gray);
+    margin-top: 5px;
+}
+
+/* Mensagem do Bot */
+.message.bot {
+    align-items: flex-start;
+}
+.message.bot .message-text {
+    background: var(--light-gray);
+    color: var(--dark);
+    border-bottom-left-radius: 4px;
+}
+.message.bot .message-time {
+    padding-left: 10px;
+}
+
+/* Mensagem do Usuário */
+.message.user {
+    align-items: flex-end;
+    margin-left: auto; /* Alinha à direita */
+}
+.message.user .message-text {
+    background: var(--primary);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+.message.user .message-time {
+    padding-right: 10px;
+    text-align: right;
+}
+
+/* --- 4. Ações Rápidas (Botões) --- */
+.quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+    padding-left: 10px;
+}
+
+.quick-action {
+    padding: 8px 15px;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.quick-action:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* --- 5. Indicadores (Digitando, Transferindo) --- */
+.chat-typing {
+    display: none;
+    padding: 0 20px 10px;
+    background: var(--light);
+}
+.chat-typing.active {
+    display: block;
+}
+.typing-dots span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #ccc;
+    border-radius: 50%;
+    margin: 0 2px;
+    animation: typing-bounce 1.4s infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing-bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1.0); }
+}
+
+.chat-transfer {
+    display: none; /* Ativado por JS */
+    padding: 10px 20px;
+    background: #fffbe6; /* Amarelo claro */
+    border-top: 1px solid #ffe58f;
+}
+.transfer-message {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #d46b08;
+    font-weight: 500;
+}
+
+/* --- 6. ÁREA DE INPUT EXPANDIDA --- */
+/* CORREÇÃO DA BARRA DE DIGITAÇÃO */
+.chat-input-container {
+    padding: 15px 20px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #eee;
+    width: 100%;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    width: 100%;
+    max-width: 100%;
+}
+
+.chat-input {
+    flex: 1;
+    min-height: 44px;
+    max-height: 120px;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 24px;
+    font-size: 14px;
+    line-height: 1.4;
+    resize: none;
+    outline: none;
+    background: white;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.chat-input:focus {
+    border-color: #4a6491;
+    box-shadow: 0 0 0 2px rgba(74, 100, 145, 0.1);
+}
+
+.chat-send {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(198, 45, 165, 0.7), rgba(198, 45, 165, 0.7));
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.chat-send:hover {
+    background: linear-gradient(135deg, rgba(198, 45, 165, 0.7), rgba(198, 45, 165, 0.7));
+    transform: scale(1.05);
+}
+
+.chat-send:active {
+    transform: scale(0.95);
+}
+
+/* Garantir que o container principal ocupe todo o espaço */
+.chat-container {
+    width: 100%;
+    max-width: 400px; /* ou o valor que você está usando */
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+    .chat-input-container {
+        padding: 12px 15px;
+    }
+    
+    .input-wrapper {
+        gap: 8px;
+    }
+    
+    .chat-input {
+        padding: 10px 14px;
+        font-size: 16px; /* Melhor para mobile */
+    }
+    
+    .chat-send {
+        width: 40px;
+        height: 40px;
+    }
+}
+/* --- 7. Formulário de Atendimento --- */
+.client-info-form {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--light-gray);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.form-header h4 {
+    margin: 0 0 5px 0;
+    font-weight: 600;
+    color: var(--dark);
+}
+.form-header p {
+    margin: 0 0 15px 0;
+    font-size: 0.9rem;
+    color: var(--gray);
+}
+
+.form-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #495057; /* gray-dark */
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: 'Inter', sans-serif;
+    transition: var(--transition);
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(198, 45, 165, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+/* Mensagem de Erro do Formulário */
+.form-error {
+    background: #fff1f0;
+    border: 1px solid #ffccc7;
+    color: #d9363e;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin: 10px 0 0 0;
+    grid-column: 1 / -1; /* Ocupa a largura total */
+    display: none; /* Mostrado por JS */
+}
+.form-error i {
+    margin-right: 5px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.form-actions button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.btn-cancel {
+    background: var(--light-gray);
+    color: var(--dark);
+}
+.btn-cancel:hover {
+    background: #ddd;
+}
+.btn-submit {
+    background: var(--primary);
+    color: white;
+}
+.btn-submit:hover {
+    background: var(--primary-dark);
+}
+
+.form-footer {
+    margin-top: 15px;
+    text-align: center;
+}
+.form-footer p small {
+    color: var(--gray);
+    font-size: 0.8rem;
+}
+
+/* === BOTÃO ATENDENTE HUMANO EM BARRA FIXA === */
+.human-attendant-bar {
+    background: linear-gradient(135deg, rgba(198, 45, 165, 0.7) 0%, #d9363e 100%);
+    padding: 12px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    flex-shrink: 0;
+}
+
+.attendant-bar-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.attendant-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.attendant-info i {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.btn-human-attendant-bar {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-human-attendant-bar:hover {
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-1px);
+}
+
+.btn-human-attendant-bar:active {
+    transform: translateY(0);
+}
+
+/* Ajuste para o container de input quando em modo humano */
+.chat-input-container.human-mode .human-attendant-bar {
+    display: none; /* Esconde a barra quando já está em modo humano */
+}
+
+/* --- 8. MOBILE: TELA CHEIA CORRIGIDA --- */
+@media (max-width: 768px) {
+    .chat-container {
+        width: 100vw !important;
+        height: 100dvh !important;
+        max-height: 100dvh !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        border-radius: 0 !important;
+        transform: translateY(100%) !important;
+        transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    }
+
+    .chat-container.active {
+        transform: translateY(0) !important;
+    }
+
+    .chat-button {
+        bottom: 20px;
+        right: 20px;
+        width: 56px;
+        height: 56px;
+        font-size: 1.3rem;
+        z-index: 10000;
+    }
+
+    /* Esconde botão quando chat aberto */
+    .chat-container.active ~ .chat-button,
+    .chat-container.active + .chat-button {
+        opacity: 0;
+        pointer-events: none;
+        transform: scale(0.8);
+        transition: all 0.3s ease;
+    }
+
+    /* Cabeçalho compacto */
+    .chat-header {
+        padding: 16px;
+        border-radius: 0;
+    }
+
+    .chat-avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .chat-agent-info h3 { font-size: 1rem; }
+    .chat-agent-info p { font-size: 0.75rem; }
+
+    /* Área de mensagens */
+    .chat-messages {
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .message { max-width: 88%; }
+    .message-text {
+        padding: 11px 15px;
+        font-size: 0.95rem;
+    }
+
+    /* Barra do atendente no mobile */
+    .human-attendant-bar {
+        padding: 10px 16px;
+    }
+    
+    .attendant-bar-content {
+        gap: 12px;
+    }
+    
+    .attendant-info {
+        font-size: 0.85rem;
+    }
+    
+    .btn-human-attendant-bar {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+    }
+
+    /* ÁREA DE INPUT EXPANDIDA NO MOBILE */
+    .chat-input-container {
+        padding: 16px; /* Aumentado no mobile */
+        padding-bottom: max(16px, env(safe-area-inset-bottom));
+        min-height: 90px; /* Mais alto no mobile */
+    }
+
+    .chat-input {
+        font-size: 16px !important;
+        padding: 14px 16px; /* Aumentado no mobile */
+        min-height: 56px; /* Mais alto no mobile */
+        max-height: 120px; /* Aumentado no mobile */
+    }
+
+    .chat-send {
+        width: 56px; /* Aumentado no mobile */
+        height: 56px; /* Aumentado no mobile */
+        font-size: 1.2rem; /* Aumentado no mobile */
+        margin-left: 12px;
+    }
+
+    /* No form, coloca os campos um abaixo do outro */
+    .form-fields {
+        grid-template-columns: 1fr;
+    }
+
+    /* Formulário fullscreen */
+    .client-info-form {
+        margin: 0;
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+    }
+
+    .form-header,
+    .form-fields,
+    .form-actions {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .btn-cancel,
+    .btn-submit {
+        width: 100%;
+        padding: 14px;
+        font-size: 15px;
+    }
+
+    /* Safe Area para iPhones */
+    @supports (padding: env(safe-area-inset-bottom)) {
+        .chat-container {
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+        }
+        .chat-messages {
+            padding-left: max(16px, env(safe-area-inset-left));
+            padding-right: max(16px, env(safe-area-inset-right));
+        }
+    }
+}
+
+/* Estilos para o Chat IA Atualizado */
+.chat-notification {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 12px;
+    height: 12px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: none;
+}
+
+.typing-text {
+    margin-left: 10px;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.message-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: var(--gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    margin-right: 10px;
+}
+
+.message.user .message-avatar {
+    background: var(--gradient-accent);
+}
+
+.message-content {
+    flex: 1;
+}
+
+.form-error {
+    background: #fee;
+    color: #c33;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    border: 1px solid #fcc;
+    display: none;
+}
+
+/* =======================================================
+ * RESPONSIVIDADE MOBILE - TELA CHEIA (CORRIGIDA)
+ * ======================================================= */
+
+@media (max-width: 768px) {
+    /* 1. Remove conflitos: container em tela cheia */
+    .chat-container {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100vw !important;
+        height: 100dvh !important;
+        max-width: none !important;
+        max-height: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        transform: translateY(100%) !important;
+        transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+        z-index: 9999 !important;
+    }
+
+    .chat-container.active {
+        transform: translateY(0) !important;
+    }
+
+    /* 2. Botão flutuante (menor e escondido ao abrir) */
+    .chat-button {
+        width: 56px !important;
+        height: 56px !important;
+        font-size: 1.4rem !important;
+        bottom: 24px !important;
+        right: 16px !important;
+    }
+
+    .chat-container.active ~ .chat-button,
+    .chat-container.active + .chat-button {
+        opacity: 0 !important;
+        pointer-events: none !important;
+        transform: scale(0.8) !important;
+        transition: all 0.3s ease !important;
+    }
+
+    /* 3. Cabeçalho compacto */
+    .chat-header {
+        padding: 16px !important;
+    }
+
+    .chat-avatar {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 1rem !important;
+    }
+
+    .chat-agent-info h3 { font-size: 1rem !important; }
+    .chat-agent-info p { font-size: 0.75rem !important; }
+
+    /* 4. Mensagens */
+    .chat-messages {
+        padding: 16px !important;
+        gap: 12px !important;
+    }
+
+    .message { max-width: 88% !important; }
+    .message-text {
+        padding: 11px 15px !important;
+        font-size: 0.95rem !important;
+    }
+
+    /* 5. Input expandido */
+    .chat-input-container {
+        padding: 16px !important;
+        padding-bottom: max(16px, env(safe-area-inset-bottom)) !important;
+    }
+
+    .chat-input {
+        font-size: 16px !important;
+        padding: 14px 16px !important;
+        min-height: 56px !important;
+        max-height: 120px !important;
+    }
+
+    .chat-send {
+        width: 56px !important;
+        height: 56px !important;
+        font-size: 1.2rem !important;
+        margin-left: 12px !important;
+    }
+
+    /* 6. Formulário em coluna */
+    .form-fields { grid-template-columns: 1fr !important; }
+
+    .client-info-form,
+    .form-header,
+    .form-fields,
+    .form-actions {
+        margin: 0 !important;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        border-radius: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    .form-actions {
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    .btn-cancel,
+    .btn-submit {
+        width: 100% !important;
+        padding: 14px !important;
+        font-size: 15px !important;
+    }
+
+    /* 7. Safe Area (iPhone notch) */
+    @supports (padding: env(safe-area-inset-bottom)) {
+        .chat-container {
+            padding-left: env(safe-area-inset-left) !important;
+            padding-right: env(safe-area-inset-right) !important;
+        }
+
+        .chat-messages {
+            padding-left: max(16px, env(safe-area-inset-left)) !important;
+            padding-right: max(16px, env(safe-area-inset-right)) !important;
+        }
+
+        .chat-input-container {
+            padding-bottom: max(16px, env(safe-area-inset-bottom)) !important;
+        }
+    }
+}
+
+/* Telas muito pequenas */
+@media (max-width: 360px) {
+    .chat-messages { padding: 12px !important; }
+    .message-text { padding: 10px 14px !important; font-size: 0.9rem !important; }
+    .chat-input-container { padding: 10px 12px !important; }
+    .chat-input { padding: 10px 14px !important; }
+}
+
+/* =======================================================
+ * FORMULÁRIO MELHORADO - MOBILE FRIENDLY
+ * ======================================================= */
+
+.client-info-form {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    margin: 0;
+}
+
+.form-header h4 {
+    margin: 0 0 6px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-header p {
+    margin: 0 0 18px;
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+}
+
+.form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #ddd;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    background: #fafafa;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(198, 45, 165, 0.15);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* === URGÊNCIA === */
+.urgency-options {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.urgency-option {
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+}
+
+.urgency-option input[type="radio"] {
+    display: none;
+}
+
+.urgency-option span {
+    display: block;
+    padding: 12px 8px;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    background: #fafafa;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.urgency-option input[type="radio"]:checked + span {
+    border-color: var(--primary);
+    background: rgba(198, 45, 165, 0.1);
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.urgency-option span small {
+    display: block;
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 4px;
+    font-weight: normal;
+}
+
+/* === ERRO === */
+#formError {
+    background: #ffebee;
+    color: #c62828;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    margin: 12px 0 0;
+    display: none;
+    border: 1px solid #ffcdd2;
+}
+
+/* === BOTÕES === */
+.form-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-cancel,
+.btn-submit {
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-cancel {
+    background: #f5f5f5;
+    color: #555;
+}
+
+.btn-cancel:hover {
+    background: #e0e0e0;
+}
+
+.btn-submit {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-submit:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+/* === MOBILE === */
+@media (max-width: 768px) {
+    .client-info-form {
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+        padding: 16px;
+    }
+
+    .form-header h4 { font-size: 1.15rem; }
+    .form-header p { font-size: 0.95rem; }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        font-size: 16px !important;
+        padding: 14px;
+    }
+
+    .urgency-option span {
+        padding: 14px 10px;
+        font-size: 0.95rem;
+    }
+
+    .btn-cancel,
+    .btn-submit {
+        padding: 16px;
+        font-size: 1rem;
+    }
+}
+
+/* === AVATARES ELEGANTES (SEM IMAGEM) === */
+.chat-avatar,
+.message-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: 2.5px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+/* Fundo gradiente por tipo */
+.chat-avatar,
+.message.bot .message-avatar {
+    background: linear-gradient(135deg, #c62da5, #da4178);
+}
+
+.message.user .message-avatar {
+    background: linear-gradient(135deg, #4a90e2, #357abd);
+}
+
+.message.bot[attendant="true"] .message-avatar,
+.chat-header.human-mode .chat-avatar {
+    background: linear-gradient(135deg, #34c759, #28a745);
+}
+
+/* Efeito hover suave */
+.chat-avatar:hover,
+.message-avatar:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Ponto de status (online) */
+.chat-avatar::after,
+.message-avatar::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+    width: 10px;
+    height: 10px;
+    background: #4ade80;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+    animation: pulse-online 2s infinite;
+}
+
+@keyframes pulse-online {
+    0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+    70% { box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+/* Ícones específicos */
+.message.bot .message-avatar i { font-size: 1.1rem; }
+.message.user .message-avatar i { font-size: 1.15rem; }
+
+/* Cabeçalho: modo humano */
+.chat-header.human-mode .chat-avatar {
+    background: linear-gradient(135deg, #34c759, #28a745);
+}

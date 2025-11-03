@@ -1,0 +1,348 @@
+/* =======================================================
+   RESPONSIVIDADE DO DASHBOARD
+   ======================================================= */
+
+/* Container Principal Responsivo */
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Sidebar - Responsivo */
+.dashboard-sidebar {
+    width: 300px;
+    min-width: 280px;
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+/* Conteúdo Principal */
+.dashboard-main {
+    flex: 1;
+    display: flex;
+    min-width: 0; /* Permite que o flex shrink funcione */
+}
+
+/* Layout das Colunas */
+.dashboard-clients {
+    width: 350px;
+    min-width: 300px;
+    border-right: 1px solid var(--border-color);
+    transition: transform 0.3s ease;
+}
+
+.dashboard-chat {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+}
+
+.dashboard-details {
+    width: 300px;
+    min-width: 250px;
+    border-left: 1px solid var(--border-color);
+    transition: transform 0.3s ease;
+}
+
+/* =======================================================
+   MOBILE FIRST - BREAKPOINTS
+   ======================================================= */
+
+/* Tablets Pequenos e Mobile (até 1024px) */
+@media (max-width: 1024px) {
+    .dashboard-details {
+        position: fixed;
+        right: -100%;
+        top: 0;
+        height: 100vh;
+        width: 90%;
+        max-width: 400px;
+        background: white;
+        z-index: 1002;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        transition: right 0.3s ease;
+    }
+    
+    .dashboard-details.active {
+        right: 0;
+    }
+}
+
+/* Tablets (até 768px) */
+@media (max-width: 768px) {
+    .dashboard-sidebar {
+        position: fixed;
+        left: -100%;
+        top: 0;
+        height: 100vh;
+        width: 85%;
+        max-width: 300px;
+        z-index: 1003;
+        transition: left 0.3s ease;
+    }
+    
+    .dashboard-sidebar.active {
+        left: 0;
+    }
+    
+    .dashboard-clients {
+        width: 100%;
+        min-width: 100%;
+    }
+    
+    .dashboard-chat {
+        position: fixed;
+        left: 100%;
+        top: 0;
+        width: 100%;
+        height: 100vh;
+        background: white;
+        z-index: 1001;
+        transition: left 0.3s ease;
+    }
+    
+    .dashboard-chat.active {
+        left: 0;
+    }
+}
+
+/* Mobile Pequeno (até 480px) */
+@media (max-width: 480px) {
+    .dashboard-container {
+        height: 100vh;
+        height: 100dvh; /* Para mobile */
+    }
+    
+    .dashboard-sidebar {
+        width: 90%;
+    }
+    
+    .dashboard-details {
+        width: 95%;
+    }
+}
+
+/* =======================================================
+   COMPONENTES RESPONSIVOS
+   ======================================================= */
+
+/* Header do Chat Mobile */
+.chat-header {
+    position: relative;
+    padding: 15px;
+}
+
+.mobile-back-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 18px;
+    margin-right: 10px;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+/* Lista de Clientes Mobile */
+.client-list {
+    height: calc(100vh - 140px);
+    overflow-y: auto;
+}
+
+.client-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-light);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.client-item:hover {
+    background-color: var(--bg-hover);
+}
+
+/* Área de Mensagens */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    height: calc(100vh - 200px);
+}
+
+/* Input de Mensagem Mobile */
+.chat-input-container {
+    padding: 15px;
+    background: var(--bg-light);
+    border-top: 1px solid var(--border-light);
+}
+
+.input-wrapper {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.chat-input {
+    flex: 1;
+    min-height: 44px;
+    max-height: 120px;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    resize: none;
+    font-size: 14px;
+}
+
+/* Botões de Ação Mobile */
+.mobile-actions {
+    display: none;
+    padding: 10px 15px;
+    background: var(--bg-light);
+    border-top: 1px solid var(--border-light);
+    gap: 10px;
+}
+
+.mobile-action-btn {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-size: 14px;
+}
+
+/* Overlay para modais mobile */
+.mobile-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+}
+
+.mobile-overlay.active {
+    display: block;
+}
+
+/* =======================================================
+   MEDIA QUERIES ESPECÍFICAS
+   ======================================================= */
+
+@media (max-width: 768px) {
+    /* Mostrar botão voltar no header do chat */
+    .mobile-back-btn {
+        display: block;
+    }
+    
+    /* Ajustar padding para mobile */
+    .chat-header {
+        padding: 12px 15px;
+    }
+    
+    .client-item {
+        padding: 10px 12px;
+    }
+    
+    /* Mostrar ações mobile */
+    .mobile-actions {
+        display: flex;
+    }
+    
+    /* Ajustar mensagens para mobile */
+    .message {
+        padding: 8px 0;
+    }
+    
+    .message-content {
+        max-width: 85%;
+    }
+    
+    /* Input mais compacto */
+    .chat-input-container {
+        padding: 12px 15px;
+    }
+    
+    .chat-input {
+        padding: 10px 14px;
+        font-size: 16px; /* Melhor para teclado mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    /* Ainda mais compacto para mobile pequeno */
+    .chat-header {
+        padding: 10px 12px;
+    }
+    
+    .client-item {
+        padding: 8px 10px;
+    }
+    
+    .chat-messages {
+        padding: 10px;
+    }
+    
+    .message-content {
+        max-width: 90%;
+    }
+    
+    .mobile-actions {
+        padding: 8px 10px;
+    }
+    
+    .mobile-action-btn {
+        padding: 8px;
+        font-size: 12px;
+    }
+}
+
+/* =======================================================
+   UTILITÁRIOS RESPONSIVOS
+   ======================================================= */
+
+/* Esconder elementos em mobile */
+.mobile-hidden {
+    display: block;
+}
+
+.tablet-hidden {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .mobile-hidden {
+        display: none !important;
+    }
+}
+
+@media (max-width: 1024px) {
+    .tablet-hidden {
+        display: none !important;
+    }
+}
+
+/* Scroll suave para mobile */
+.chat-messages,
+.client-list {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+}
+
+/* Prevenir zoom em inputs para iOS */
+@media (max-width: 768px) {
+    .chat-input,
+    input,
+    textarea {
+        font-size: 16px; /* Previne zoom no iOS */
+    }
+}

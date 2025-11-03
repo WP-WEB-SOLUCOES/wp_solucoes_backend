@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossos Serviços - WP Web Soluções</title>
+    <meta name="description"
+        content="Conheça todos os nossos serviços de desenvolvimento web, aplicativos mobile, sistemas personalizados e soluções em IA">
+
+    <!-- ========== FAVICON CONFIGURATION ========== -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/public/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/favicon-16x16.png">
+    <link rel="manifest" href="/public/site.webmanifest">
+    <link rel="icon" href="/public/favicon.ico">
+    <meta name="theme-color" content="#c62da5">
+    <!-- ========== END FAVICON ========== -->
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="stylesheet" href="/css/chat.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <nav class="nav-container">
+                <a href="/index.html" class="logo">
+                    <img src="/public/logo.png" alt="WP Web Soluções" class="logo-image" style="width: 10%;">
+                    WP Web Soluções
+                </a>
+
+                <button class="mobile-toggle" id="mobileToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <div class="nav-actions" id="navActions">
+                    <ul class="nav-menu">
+                        <li><a href="/index.html" class="nav-link">Home</a></li>
+                        <li><a href="about.html" class="nav-link">Sobre</a></li>
+                        <li><a href="service.html" class="nav-link" style="color: crimson;">Serviços</a></li>
+                        <li><a href="systems.html" class="nav-link">Sistemas</a></li>
+                        <li><a href="process.html" class="nav-link">Processo</a></li>
+                    </ul>
+                    <a href="https://wa.me/5531997542811?text=Olá! Gostaria de mais informações sobre os serviços da WP Web Soluções. Podemos conversar?"
+                        class="btn btn-whatsapp" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Fale Conosco
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-cog"></i>
+                    Soluções completas em desenvolvimento
+                </div>
+                <h1 class="hero-title">
+                    Nossos
+                    <span class="gradient-text">Serviços</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Desenvolvemos soluções digitais sob medida para impulsionar seu negócio. 
+                    Do conceito à implementação, entregamos excelência técnica em cada projeto.
+                </p>
+                <div class="hero-actions">
+                    <a href="#web-development" class="btn btn-primary">
+                        <i class="fas fa-laptop-code"></i>
+                        Desenvolvimento Web
+                    </a>
+                    <a href="#mobile" class="btn btn-outline">
+                        <i class="fas fa-mobile-alt"></i>
+                        Apps Mobile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Web Development Services -->
+    <section class="section" id="web-development">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Desenvolvimento Web</h2>
+                <p class="section-subtitle">
+                    Criamos sites e sistemas web modernos, responsivos e de alta performance
+                </p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3 class="service-title">Landing Pages</h3>
+                    <p class="service-price">A partir de R$ 1.500</p>
+                    <p>Páginas de conversão otimizadas para capturar leads e promover seus produtos</p>
+                    <ul class="service-features">
+                        <li>Design responsivo e moderno</li>
+                        <li>Otimização para SEO</li>
+                        <li>Integração com formulários</li>
+                        <li>Google Analytics</li>
+                        <li>Entrega: 1-2 semanas</li>
+                    </ul>
+                    <a href="https://wa.me/5531997542811?text=Olá! Tenho interesse em uma Landing Page. Poderia me dar mais informações?"
+                        class="btn btn-outline" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Solicitar Orçamento
+                    </a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3 class="service-title">Site Institucional</h3>
+                    <p class="service-price">A partir de R$ 3.500</p>
+                    <p>Site completo para sua empresa com todas as páginas necessárias</p>
+                    <ul class="service-features">
+                        <li>Até 8 páginas personalizadas</li>
+                        <li>Design exclusivo</li>
+                        <li>Blog integrado</li>
+                        <li>Painel administrativo</li>
+                        <li>Entrega: 3-4 semanas</li>
+                    </ul>
+                    <a href="https://wa.me/5531997542811?text=Olá! Gostaria de um Site Institucional. Poderia me enviar uma proposta?"
+                        class="btn btn-outline" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Solicitar Orçamento
+                    </a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3 class="service-title">E-commerce</h3>
+                    <p class="service-price">A partir de R$ 6.000</p>
+                    <p>Loja virtual completa com sistema de pagamentos e gestão de produtos</p>
+                    <ul class="service-features">
+                        <li>Catálogo de produtos</li>
+                        <li>Múltiplas formas de pagamento</li>
+                        <li>Gestão de estoque</li>
+                        <li>Painel administrativo</li>
+                        <li>Entrega: 4-6 semanas</li>
+                    </ul>
+                    <a href="https://wa.me/5531997542811?text=Olá! Quero desenvolver um E-commerce. Podemos conversar?"
+                        class="btn btn-outline" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Solicitar Orçamento
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mobile Development Services -->
+    <section class="section services" id="mobile">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Aplicativos Mobile</h2>
+                <p class="section-subtitle">
+                    Desenvolvemos apps nativos e híbridos para iOS e Android
+                </p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-mobile"></i>
+                    </div>
+                    <h3 class="service-title">App Básico</h3>
+                    <p class="service-price">A partir de R$ 8.000</p>
+                    <p>Aplicativo com funcionalidades essenciais e interface intuitiva</p>
+                    <ul class="service-features">
+                        <li>Desenvolvimento em Flutter</li>
+                        <li>iOS e Android</li>
+                        <li>Até 5 telas principais</li>
+                        <li>Integração com APIs</li>
+                        <li>Entrega: 6-8 semanas</li>
+                    </ul>
+                    <a href="https://wa.me/5531997542811?text=Olá! Tenho interesse em um App Básico. Poderia me dar mais detalhes?"
+                        class="btn btn-outline" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Solicitar Orçamento
+                    </a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="service-title">App Intermediário</h3>
+                    <p class="service-price">A partir de R$ 12.000</p>
+                    <p>Aplicativo com funcionalidades avançadas e integrações</p>
+                    <ul class="service-features">
+                        <li>Funcionalidades customizadas</li>
+                        <li>Integração com serviços externos</li>
+                        <li>Sistema de usuários</li>
+                        <li>Push notifications</li>
+                        <li>Entrega: 8-12 semanas</li>
+                    </ul>
+                    <a href="https://wa.me/5531997542811?text=Olá! Gostaria de desenvolver um App Intermediário. Podemos conversar?"
+                        class="btn btn-outline" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Solicitar Orçamento
+                    </a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3 class="service-title">App Complexo</h3>
+                    <p class="service-price">A partir de R$ 18.000</p>
+                    <p>Aplicativo completo com funcionalidades empresariais</p>
+                    <ul class="service-features">
+                        <li>Funcionalidades complexas</li>
+                        <li>Múltiplas integrações</li>
+                        <li>Sistema de pagamentos</li>
+                        <li>Dashboard administrativo</li>
+                        <li>Entrega: 12-16 semanas</li>
+                    </ul>
+                    <a href="https://wa.me/5531997542811?text=Olá! Preciso de um App Complexo para minha empresa. Poderia me ajudar?"
+                        class="btn btn-outline" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Solicitar Orçamento
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Systems & Automation -->
+    <section class="section" id="systems">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Sistemas & Automação</h2>
+                <p class="section-subtitle">
+                    Desenvolvemos sistemas web personalizados para otimizar seus processos
+                </p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="service-title">Sistema de Gestão</h3>
+                    <p class="service-price">A partir de R$ 12.000</p>
+                    <p>Sistema completo para gestão empresarial e controle de processos</p>
+                    <ul class="service-features">
+                        <li>Dashboard administrativo</li>
+                        <li>Relatórios personalizados</li>
+                        <li>Gestão de usuários</li>
+                        <li>Módulos customizados</li>
+                        <li>Entrega: 8-12 semanas</li>
+                    </ul>
+                    <a href="https://wa.me/5531997542811?text=Olá! Preciso de um Sistema de Gestão. Poderia me enviar uma proposta?"
+                        class="btn btn-outline" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Solicitar Orçamento
+                    </a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="service-title">Automação com IA</h3>
+                    <p class="service-price">A partir de R$ 8.000</p>
+                    <p>Soluções inteligentes para automatizar processos e análises</p>
+                    <ul class="service-features">
+                        <li>Chatbots inteligentes</li>
+                        <li>Automação de workflows</li>
+                        <li>Análise de dados</li>
+                        <li>Integração com APIs</li>
+                        <li>Entrega: 4-8 semanas</li>
+                    </ul>
+                    <a href="https://wa.me/5531997542811?text=Olá! Tenho interesse em Automação com IA. Poderia me explicar melhor?"
+                        class="btn btn-outline" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Solicitar Orçamento
+                    </a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3 class="service-title">API & Backend</h3>
+                    <p class="service-price">A partir de R$ 5.000</p>
+                    <p>Desenvolvimento de APIs robustas e sistemas backend</p>
+                    <ul class="service-features">
+                        <li>API RESTful</li>
+                        <li>Documentação completa</li>
+                        <li>Autenticação segura</li>
+                        <li>Banco de dados otimizado</li>
+                        <li>Entrega: 3-6 semanas</li>
+                    </ul>
+                    <a href="https://wa.me/5531997542811?text=Olá! Preciso de desenvolvimento de API/Backend. Podemos conversar?"
+                        class="btn btn-outline" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Solicitar Orçamento
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="section services" id="tech-stack">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Tecnologias que Utilizamos</h2>
+                <p class="section-subtitle">
+                    Trabalhamos com as melhores tecnologias do mercado para garantir qualidade e performance
+                </p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fab fa-js"></i>
+                    </div>
+                    <h3 class="feature-title">Frontend</h3>
+                    <p class="feature-description">
+                        HTML5, CSS3, JavaScript, React, Vue.js, TypeScript, Flutter
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <h3 class="feature-title">Backend</h3>
+                    <p class="feature-description">
+                        Python, FastAPI, Node.js, MongoDB, PostgreSQL, MySQL
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <h3 class="feature-title">Cloud & DevOps</h3>
+                    <p class="feature-description">
+                        AWS, Google Cloud, Docker, CI/CD, Git, Linux
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="section" id="process">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Como Trabalhamos</h2>
+                <p class="section-subtitle">
+                    Metodologia ágil e transparente que garante qualidade e satisfação
+                </p>
+            </div>
+            
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Consultoria & Planejamento</h3>
+                        <p class="step-description">
+                            Análise detalhada das necessidades, definição de escopo, 
+                            cronograma e orçamento. Criação de wireframes e protótipos.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Design & Desenvolvimento</h3>
+                        <p class="step-description">
+                            Criação do design UI/UX e desenvolvimento em sprints de 2 semanas 
+                            com entregas parciais para validação do cliente.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Testes & Qualidade</h3>
+                        <p class="step-description">
+                            Testes rigorosos de funcionalidade, performance, segurança 
+                            e usabilidade. Correções e ajustes necessários.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Entrega & Suporte</h3>
+                        <p class="step-description">
+                            Deploy da aplicação, treinamento da equipe e início do 
+                            período de suporte pós-entrega.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Pronto para Iniciar seu Projeto?</h2>
+                <p class="cta-description">
+                    Entre em contato para uma consultoria gratuita e receba uma proposta personalizada 
+                    para suas necessidades.
+                </p>
+                <a href="https://wa.me/5531997542811?text=Olá! Gostaria de uma consultoria gratuita para meu projeto. Podemos conversar?"
+                    class="btn btn-white" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    Consultoria Gratuita
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>WP Web Soluções</h3>
+                    <p class="footer-description">
+                        Especialistas em desenvolvimento de aplicativos e soluções web
+                        sob medida para impulsionar negócios digitais.
+                    </p>
+                    <a href="https://wa.me/5531997542811?text=Olá! Gostaria de mais informações sobre a WP Web Soluções."
+                        class="btn btn-whatsapp" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Fale Conosco no WhatsApp
+                    </a>
+                </div>
+                <div class="footer-col">
+                    <h3>Serviços</h3>
+                    <ul class="footer-links">
+                        <li><a href="#web-development">Desenvolvimento Web</a></li>
+                        <li><a href="#mobile">Aplicativos Mobile</a></li>
+                        <li><a href="#systems">Sistemas Personalizados</a></li>
+                        <li><a href="#systems">Automação com IA</a></li>
+                        <li><a href="#systems">API & Backend</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contato</h3>
+                    <ul class="footer-links">
+                        <li>
+                            <a href="mailto:contato@wpwebsolucoes.com.br">
+                                <i class="fas fa-envelope"></i>
+                                contato@wpwebsolucoes.com.br
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://wa.me/5531997542811" target="_blank">
+                                <i class="fab fa-whatsapp"></i>
+                                (31) 99754-2811
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Minas Gerais, MG - Brasil
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-clock"></i>
+                                Seg - Sex: 9h às 18h
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 WP Web Soluções. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/js/main.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/chat-websocket.js"></script>
+    <script src="/js/chat-ia.js"></script>
+</body>
+
+</html>

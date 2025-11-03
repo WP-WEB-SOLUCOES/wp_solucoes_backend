@@ -1,0 +1,58 @@
+<div class="internals-chat-page">
+
+    <div class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">
+                <i class="fas fa-users-line"></i>
+                Chat Interno da Equipe
+            </h1>
+            <p class="page-subtitle">Comunicação em tempo real com outros atendentes online.</p>
+        </div>
+        <div class="header-actions">
+            <span class="status-indicator online">
+                <i class="fas fa-circle"></i>
+                Você está Online
+            </span>
+        </div>
+    </div>
+
+    <div class="internals-content-grid">
+
+        <div class="internals-chat-container">
+
+            <div class="internals-messages" id="internalMessages">
+                <div class="message system-message">
+                    <div class="message-content">
+                        <div class="message-text">
+                            <i class="fas fa-info-circle"></i>
+                            <strong>[SISTEMA]</strong> Bem-vindo ao chat interno. As mensagens aqui são temporárias e
+                            visíveis apenas para atendentes online.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mention-popup" id="mentionPopup">
+            </div>
+
+            <form class="internals-form" id="internalChatForm">
+                <div class="input-wrapper">
+                    <textarea class="chat-input" id="internalMessageInput"
+                        placeholder="Digite sua mensagem para a equipe..." rows="1"></textarea>
+                    <button type="submit" class="btn-send" title="Enviar Mensagem">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </form>
+
+        </div>
+        <div class="internals-sidebar">
+            <div class="sidebar-header">
+                <h3>Online Agora</h3>
+                <span id="attendantCount">(0)</span>
+            </div>
+            <ul class="attendant-list" id="attendantList">
+            </ul>
+        </div>
+    </div>
+</div>

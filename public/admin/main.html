@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Atendimento - WP Web Soluções</title>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS movido para um arquivo externo -->
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+    <div class="dashboard-grid">
+        <!-- Sidebar -->
+        <nav class="dashboard-nav">
+            <div class="nav-brand">
+                <div class="logo">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <div class="logo-text">WP Web</div>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <!-- Links agora chamam o roteador JS -->
+                    <!-- MUDANÇA: data-page="dashboard" -->
+                    <a class="nav-link" id="nav-link-atendimento" data-page="dashboard">
+                        <i class="fas fa-comments"></i>
+                        <span>Atendimento</span>
+                        <span class="nav-badge" id="dashboardBadge"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <!-- MUDANÇA: data-page="historico" -->
+                    <a class="nav-link" id="nav-link-historico" data-page="historico">
+                        <i class="fas fa-history"></i>
+                        <span>Histórico</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link" id="nav-link-internals" data-page="internals">
+                        <i class="fas fa-users"></i>
+                        <span>Interno</span>
+                        <span class="nav-badge" id="internalsBadge"></span>
+                    </a>
+                </li>
+
+                <!-- Item de Menu Admin -->
+                <li class="nav-item" id="nav-item-users" style="display: none;">
+                    <!-- MUDANÇA: Sem data-page, apenas abre o modal -->
+                    <a class="nav-link" id="nav-link-users">
+                        <i class="fas fa-users-cog"></i>
+                        <span>Usuários</span>
+                    </a>
+                </li>
+
+
+            </ul>
+
+            <div class="nav-profile">
+                <div class="profile">
+                    <div class="avatar" id="attendantAvatar"></div>
+                    <div class="profile-info">
+                        <span id="attendantName">Carregando...</span>
+                        <a id="logoutButton" class="nav-link-logout">
+                            <span>Sair</span>
+                            <i class="fas fa-sign-out-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- NOVO: Container de Conteúdo Dinâmico -->
+        <!-- As páginas (dashboard.html, historico.html) serão carregadas aqui -->
+        <div id="app-content">
+            <!-- O JavaScript irá preencher este local -->
+        </div>
+
+    </div>
+
+    <!-- === MODAL DE REGISTRO (Permanece na Casca) === -->
+    <div id="registerUserModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Registrar Novo Usuário</h3>
+                <button id="closeModalBtn" class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="registerUsername">Nome de Usuário</label>
+                        <input type="text" id="registerUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Senha</label>
+                        <input type="password" id="registerPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerRole">Função (Role)</label>
+                        <select id="registerRole">
+                            <option value="atendente" selected>Atendente</option>
+                            <option value="admin">Administrador</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-submit" id="registerSubmitBtn">
+                        <i class="fas fa-user-plus"></i> Registrar
+                    </button>
+                    <div class="message-feedback" id="registerMessage" style="display: none;"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT PRINCIPAL: Mudado de dashboard.js para main.js -->
+    <script src="main.js"></script>
+</body>
+
+</html>

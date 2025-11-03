@@ -1,0 +1,111 @@
+<!-- 
+    ESTE É UM ARQUIVO PARCIAL.
+    Ele é carregado dentro do #app-content no main.html
+-->
+<div class="app-content-grid">
+    <!-- Lista de Clientes -->
+    <aside class="dashboard-inbox">
+        <div class="inbox-header">
+            <h2>Caixa de Entrada</h2>
+            <div class="inbox-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="inboxSearchInput" placeholder="Procurar cliente...">
+            </div>
+        </div>
+        
+        <ul class="client-list" id="clientList">
+            <!-- A lista será populada pelo JS -->
+        </ul>
+        <!-- MOVIDO PARA FORA DA UL -->
+        <div class="empty-list" id="emptyListMessage">
+            <i class="fas fa-moon"></i>
+            <span>Nenhum cliente online no momento.</span>
+        </div>
+    </aside>
+
+    <!-- Área de Chat -->
+    <main class="dashboard-chat">
+        <header class="chat-header" id="chatHeader">
+            <!-- Botão Voltar para Mobile -->
+            <button class="chat-back-btn" id="chatBackBtn">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            
+            <div class="avatar" id="chatAvatar">?</div>
+            <div class="chat-header-info">
+                <h3 id="chatClientName">Nenhum chat selecionado</h3>
+                <p id="chatClientStatus">Selecione um cliente para conversar</p>
+            </div>
+
+            <!-- Botão de Fechar Chat -->
+            <button class="btn-close-chat" id="closeChatBtn" title="Fechar este chat">
+                <i class="fas fa-check-circle"></i> Fechar
+            </button>
+        </header>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="placeholder-message" id="chatPlaceholder">
+                <i class="fas fa-comments"></i>
+                <p>Selecione um cliente na lista ao lado para ver as mensagens.</p>
+            </div>
+        </div>
+
+        <form class="chat-form" id="chatForm">
+            <div class="chat-input-wrapper">
+                <input type="text" id="messageInput" placeholder="Digite sua resposta..." autocomplete="off" disabled>
+            </div>
+            <button type="submit" class="btn-send" disabled>
+                <i class="fas fa-paper-plane"></i> Enviar
+            </button>
+        </form>
+    </main>
+
+    <!-- Detalhes do Cliente -->
+    <aside class="dashboard-details" id="clientDetailsPanel">
+        <div class="details-header">
+            <h3>Detalhes do Cliente</h3>
+        </div>
+        <div class="details-content" id="clientDetailsContent">
+            <div class="details-placeholder" id="detailsPlaceholder">
+                <i class="fas fa-user-circle"></i>
+                <p>Selecione um chat para ver os detalhes do cliente.</p>
+            </div>
+
+            <div id="clientInfo" class="hidden">
+                <div class="detail-item">
+                    <label><i class="fas fa-user"></i> Nome</label>
+                    <span id="clientDetailName"></span>
+                </div>
+                <div class="detail-item">
+                    <label><i class="fas fa-envelope"></i> E-mail</label>
+                    <span id="clientDetailEmail"></span>
+                </div>
+                <div class="detail-item">
+                    <label><i class="fas fa-phone"></i> Telefone</label>
+                    <span id="clientDetailPhone"></span>
+                </div>
+                <div class="detail-item">
+                    <label><i class="fas fa-lightbulb"></i> Tipo de Projeto</label>
+                    <span id="clientDetailProject"></span>
+                </div>
+                <div class="detail-item">
+                    <label><i class="fas fa-clock"></i> Urgência</label>
+                    <span id="clientDetailUrgency"></span>
+                </div>
+                <div class="detail-item full-width">
+                    <label><i class="fas fa-info-circle"></i> Mensagem Inicial</label>
+                    <p id="clientDetailMessage"></p>
+                </div>
+                <div class="detail-item">
+                    <label><i class="fas fa-globe"></i> Origem</label>
+                    <span id="clientDetailSource"></span>
+                </div>
+                <div class="detail-item">
+                    <label><i class="fas fa-hourglass-start"></i> Tempo na Página</label>
+                    <span id="clientDetailTime"></span>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>
+
