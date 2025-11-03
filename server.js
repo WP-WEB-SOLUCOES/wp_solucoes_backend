@@ -167,6 +167,71 @@ mongoose.connect(MONGO_URI)
 // 6. Configuração Express e Middlewares
 // =======================================================
 const app = express();
+
+// =======================================================
+// 6.5 ROTA DE AUTO-DEPLOY (GITHUB WEBHOOK) - VERSÃO SEGURA
+// =======================================================
+app.post('/github-webhook', express.raw({ type: 'application/json' }), (req, res) => {
+    console.log('Webhook do GitHub recebido...');
+
+    try {
+        // 1. Verificar o Segredo
+        const signature = req.get('X-Hub-Signature-256');
+        if (!signature) {
+            console.warn('Webhook rejeitado: Sem assinatura.');
+            return res.status(401).send('Assinatura X-Hub-Signature-256 é obrigatória.');
+        }
+
+        const hmac = crypto.createHmac('sha256', WEBHOOK_SECRET);
+        const digest = 'sha256=' + hmac.update(req.body).digest('hex');
+
+        if (!crypto.timingSafeEqual(Buffer.from(digest), Buffer.from(signature))) {
+            console.warn('Webhook rejeitado: Assinatura inválida.');
+            return res.status(401).send('Assinatura inválida.');
+        }
+
+        // 2. Verificar o Evento
+        const event = req.get('X-GitHub-Event');
+        const data = JSON.parse(req.body.toString());
+
+        // --- LÓGICA DE EVENTOS ---
+
+        // A. Se for o evento "ping" (teste do GitHub)
+        if (event === 'ping') {
+            console.log('Evento "ping" do GitHub recebido com sucesso.');
+            return res.status(200).send('Ping recebido com sucesso.');
+        }
+
+        // B. Se for um push para a branch 'main'
+        if (event === 'push' && data.ref === 'refs/heads/main') {
+            console.log('Push para a branch [main] detectado. Iniciando deploy...');
+            res.status(202).send('Deploy iniciado.'); // Responde ao GitHub primeiro
+
+            // Executa o script
+            const deployScript = path.join(__dirname, 'deploy.sh');
+            exec(`sh ${deployScript}`, (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`Erro ao executar deploy.sh: ${error.message}`);
+                    return;
+                }
+                if (stderr) {
+                    console.error(`Stderr do deploy.sh: ${stderr}`);
+                    return;
+                }
+                console.log(`Stdout do deploy.sh: \n${stdout}`);
+            });
+
+        } else {
+            console.log('Webhook recebido, mas não é um push para a [main]. Ignorando.');
+            res.status(200).send('Evento recebido, mas ignorado.');
+        }
+
+    } catch (error) {
+        console.error('Erro GERAL na rota /github-webhook:', error.message);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -474,70 +539,6 @@ Mensagem: ${clientData.message || 'Sem mensagem adicional'}`;
         console.error('Erro ao salvar dados do cliente:', error);
         res.status(500).json({ success: false, error: 'Erro ao salvar dados' });
     }
-});
-
-// =======================================================
-// 6.5 ROTA DE AUTO-DEPLOY (GITHUB WEBHOOK) - VERSÃO SEGURA
-// =======================================================
-app.post('/github-webhook', express.raw({ type: 'application/json' }), (req, res) => {
-    console.log('Webhook do GitHub recebido...');
-
-    try {
-        // 1. Verificar o Segredo
-        const signature = req.get('X-Hub-Signature-256');
-        if (!signature) {
-            console.warn('Webhook rejeitado: Sem assinatura.');
-            return res.status(401).send('Assinatura X-Hub-Signature-256 é obrigatória.');
-        }
-
-        const hmac = crypto.createHmac('sha256', WEBHOOK_SECRET);
-        const digest = 'sha256=' + hmac.update(req.body).digest('hex');
-
-        if (!crypto.timingSafeEqual(Buffer.from(digest), Buffer.from(signature))) {
-            console.warn('Webhook rejeitado: Assinatura inválida.');
-            return res.status(401).send('Assinatura inválida.');
-        }
-
-        // 2. Verificar o Evento
-        const event = req.get('X-GitHub-Event');
-        const data = JSON.parse(req.body.toString());
-
-        // --- LÓGICA DE EVENTOS ---
-
-        // A. Se for o evento "ping" (teste do GitHub)
-        if (event === 'ping') {
-            console.log('Evento "ping" do GitHub recebido com sucesso.');
-            return res.status(200).send('Ping recebido com sucesso.');
-        }
-
-        // B. Se for um push para a branch 'main'
-        if (event === 'push' && data.ref === 'refs/heads/main') {
-            console.log('Push para a branch [main] detectado. Iniciando deploy...');
-            res.status(202).send('Deploy iniciado.'); // Responde ao GitHub primeiro
-
-            // Executa o script
-            const deployScript = path.join(__dirname, 'deploy.sh');
-            exec(`sh ${deployScript}`, (error, stdout, stderr) => {
-                if (error) {
-                    console.error(`Erro ao executar deploy.sh: ${error.message}`);
-                    return;
-                }
-                if (stderr) {
-                    console.error(`Stderr do deploy.sh: ${stderr}`);
-                    return;
-                }
-                console.log(`Stdout do deploy.sh: \n${stdout}`);
-            });
-
-        } else {
-            console.log('Webhook recebido, mas não é um push para a [main]. Ignorando.');
-            res.status(200).send('Evento recebido, mas ignorado.');
-        }
-
-    } catch (error) {
-        console.error('Erro GERAL na rota /github-webhook:', error.message);
-        res.status(500).send('Internal Server Error');
-    }
 });
 
 // --- Middleware de Autenticação do Socket.io ---
