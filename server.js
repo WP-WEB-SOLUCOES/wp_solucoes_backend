@@ -1,4 +1,4 @@
-// server.js - Versão CORRIGIDA (com autenticação 'admin_join')
+// server.js - Versão FINAL E CORRIGIDA (com admin_join e proteção de rotas)
 
 // =======================================================
 // 1. Importações e Configuração
@@ -251,23 +251,79 @@ const helmetConfig = {
 };
 app.use(helmet(helmetConfig));
 
+// =======================================================
+// 7. Middlewares de Autenticação e Rotas
+// =======================================================
+
+// --- Middleware: Redireciona se já estiver logado ---
+// (Usado APENAS na rota /admin/login)
+const redirectIfLoggedIn = (req, res, next) => {
+    const token = req.cookies.token;
+    if (!token) {
+        return next(); // Não está logado, continua para a pág de login
+    }
+
+    try {
+        jwt.verify(token, JWT_SECRET);
+        // Token é válido, redireciona para o painel
+        return res.redirect('/admin/');
+    } catch (error) {
+        // Token é inválido, deixa o usuário ir para a pág de login
+        res.clearCookie('token', { path: '/' });
+        return next();
+    }
+};
+
+// --- Middleware: Verifica Admin (Protege rotas) ---
+const verifyAdmin = (req, res, next) => {
+    const token = req.cookies.token;
+
+    if (!token) {
+        // Se não tem token, VAI PARA O LOGIN
+        return res.redirect('/admin/login');
+    }
+
+    try {
+        // Se tem token, TENTA VALIDAR
+        const decoded = jwt.verify(token, JWT_SECRET);
+        req.user = decoded; // Anexa os dados do usuário na requisição
+
+        // Verifica permissão para rotas específicas de 'admin'
+        if (req.path === '/admin/register' && decoded.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Acesso negado. Requer admin.' });
+        }
+        
+        // Permissão OK, continua para a rota protegida
+        next();
+    
+    } catch (error) {
+        // Se o token é inválido (expirado, etc), VAI PARA O LOGIN
+        console.warn('Token inválido ou expirado, redirecionando para login.');
+        res.clearCookie('token', { path: '/' }); // Limpa o cookie ruim
+        return res.redirect('/admin/login');
+    }
+};
+
 // --- Rotas Públicas de PÁGINA ---
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.get('/admin/login', (req, res) => {
+// --- Rotas de Admin (com proteção) ---
+app.get('/admin/login', redirectIfLoggedIn, (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin', 'login.html'));
 });
 
-// *** MODIFICAÇÃO: A rota /admin agora redireciona para /admin/ para consistência ***
+// A rota /admin redireciona para /admin/ para garantir caminhos relativos
 app.get('/admin', (req, res) => {
     res.redirect('/admin/');
 });
 
-app.get('/admin/', (req, res) => {
+// A rota /admin/ (que serve o main.html) AGORA É PROTEGIDA
+app.get('/admin/', verifyAdmin, (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin', 'main.html'));
 });
+
 
 // --- Rate Limit no Login ---
 const loginLimiter = rateLimit({
@@ -374,7 +430,7 @@ app.post('/api/chat/message', async (req, res) => {
 });
 
 // =======================================================
-// 7. Sistema de Socket.io
+// 8. Sistema de Socket.io
 // =======================================================
 const server = http.createServer(app);
 const io = socketIo(server);
@@ -383,10 +439,7 @@ const attendants = new Map();
 
 // --- Funções de Broadcast ---
 function getFilteredClientList(role, username) {
-    // *** ATUALIZADO: envia a sessão inteira para o frontend ***
-    // O frontend 'main.js' espera um objeto { session: {...} }
     const fullList = Array.from(clients.values());
-
     if (role === 'admin') return fullList;
     
     return fullList.filter(client => {
@@ -433,32 +486,6 @@ io.use((socket, next) => {
     next();
 });
 
-// --- Verificação de Admin (Express) ---
-const verifyAdmin = (req, res, next) => {
-    const token = req.cookies.token;
-    if (!token) {
-        if (req.path.startsWith('/pages/')) return res.redirect('/admin/login');
-        return res.status(401).json({ success: false, message: 'Token não fornecido.' });
-    }
-
-    try {
-        const decoded = jwt.verify(token, JWT_SECRET);
-        req.user = decoded;
-
-        if (req.path === '/admin/register' && decoded.role !== 'admin') {
-            return res.status(403).json({ success: false, message: 'Acesso negado. Requer admin.' });
-        }
-        if (['/api/chat/history', '/pages/dashboard', '/pages/historico', '/pages/internals'].some(p => req.path.startsWith(p))) {
-            if (!['admin', 'atendente'].includes(decoded.role)) {
-                return res.status(403).send('Acesso negado.');
-            }
-        }
-        next();
-    } catch (error) {
-        if (req.path.startsWith('/pages/')) return res.redirect('/admin/login');
-        return res.status(401).json({ success: false, message: 'Token inválido ou expirado.' });
-    }
-};
 
 // --- Rotas Protegidas ---
 app.post('/admin/register', verifyAdmin, async (req, res) => {
@@ -503,6 +530,7 @@ app.get('/api/chat/history', verifyAdmin, async (req, res) => {
     }
 });
 
+// As rotas /pages/ AGORA ESTÃO PROTEGIDAS pelo 'verifyAdmin'
 app.get('/pages/dashboard', verifyAdmin, (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin', 'dashboard.html')));
 app.get('/pages/historico', verifyAdmin, (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin', 'historico.html')));
 app.get('/pages/internals', verifyAdmin, (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin', 'internals.html')));
@@ -547,20 +575,17 @@ Mensagem: ${clientData.message || 'Sem mensagem adicional'}`;
     }
 });
 
-// --- Rotas de Diagnóstico (REMOVIDAS PARA VERSÃO FINAL CORRIGIDA) ---
-// app.get('/admin/main.js', ...);
-// app.get('/admin/dashboard.css', ...);
-
 // --- Arquivos Estáticos (ÚLTIMO) ---
+// Esta rota agora servirá 'main.js' e 'dashboard.css' de 'public/admin/'
 app.use(express.static(path.join(__dirname, 'public')));
 
 // =======================================================
-// 8. Socket.io Eventos
+// 9. Socket.io Eventos
 // =======================================================
 io.on('connection', (socket) => {
 
     // =======================================================
-    // *** INÍCIO DA CORREÇÃO ***
+    // *** INÍCIO DAS CORREÇÕES DE SOCKET ***
     // =======================================================
 
     // --- Admin se anuncia ---
@@ -568,7 +593,7 @@ io.on('connection', (socket) => {
         // Apenas sockets que passaram pelo middleware io.use() com um
         // token válido terão 'socket.user'
         if (!socket.user) {
-            console.warn('Socket tentou ', admin_join, ' sem autenticação.');
+            console.warn("Socket tentou 'admin_join' sem autenticação.");
             return;
         }
         
@@ -644,7 +669,7 @@ io.on('connection', (socket) => {
     });
 
     // =======================================================
-    // *** FIM DA CORREÇÃO ***
+    // *** FIM DAS CORREÇÕES DE SOCKET ***
     // =======================================================
 
     // --- Admin Envia Mensagem ---
@@ -761,7 +786,7 @@ io.on('connection', (socket) => {
 });
 
 // =======================================================
-// 9. Iniciar Servidor
+// 10. Iniciar Servidor
 // =======================================================
 server.listen(PORT, HOST, () => {
     console.log(`Servidor rodando em http://${HOST}:${PORT}`);
