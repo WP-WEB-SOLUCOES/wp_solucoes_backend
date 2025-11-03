@@ -1,5 +1,6 @@
 // ===================================
-// ARQUIVO: main.js (CÓDIGO COMPLETO E CORRIGIDO)
+// CÓDIGO JAVASCRIPT COMPLETO E CORRIGIDO
+// Garante que o popup abre e fecha corretamente, respeitando o CSS.
 // ===================================
 
 // ===================================
@@ -94,19 +95,20 @@ document.querySelectorAll('.nav-actions a').forEach(link => {
 
 
 // ===================================
-// PORTFOLIO E POPUPS (Lógica de Abrir/Fechar e Filtro)
+// PORTFOLIO E POPUPS (Lógica de Abrir/Fechar e Filtro) - CORRIGIDO
 // ===================================
 
-// Variável para rastrear o estado do popup (ajuda a evitar pushState duplicado)
+// Variável para rastrear o estado do popup (ajuda a evitar pushState duplicado e conflitos)
 let isPopupOpen = false;
 
-// Funções do Popup (CORRIGIDAS)
+// Funções do Popup
 function openPopup(popupId) {
     const popup = document.getElementById(popupId);
     if (!popup) return;
 
+    // O CSS com display: flex; e opacity: 1; é ativado pela classe 'active'
     popup.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden'; // Previne o scroll do body
     
     // Adiciona ao histórico APENAS se não estivermos já em um estado de popup
     if (!isPopupOpen) {
@@ -125,11 +127,11 @@ function closePopup(popupId) {
     const popup = document.getElementById(popupId);
     if (!popup) return;
 
-    // Apenas remove a classe e volta no histórico se o estado foi adicionado
+    // Se o popup foi aberto usando history.pushState, voltamos no histórico para limpar o estado.
     if (isPopupOpen) {
         isPopupOpen = false; 
         
-        // Remove a classe ANTES de voltar no histórico para evitar flashes
+        // Remove a classe ANTES de voltar no histórico
         popup.classList.remove('active');
         document.body.style.overflow = 'auto';
 
@@ -161,7 +163,7 @@ document.querySelectorAll('.portfolio-tab').forEach(tab => {
             if (category === 'all' || itemCategory === category) {
                 // Lógica de exibição e animação
                 item.style.display = 'block';
-                item.classList.remove('animate'); // Reseta a animação
+                item.classList.remove('animate'); 
                 setTimeout(() => {
                     item.classList.add('animate');
                 }, 10);
@@ -199,7 +201,7 @@ function enhancePopupMobile() {
             if (e.target === this) {
                  const currentId = this.id;
                  if (isPopupOpen) {
-                     closePopup(currentId);
+                     closePopup(currentId); // Usa o fluxo de fechar que reverte o histórico
                  } else {
                     this.classList.remove('active');
                     document.body.style.overflow = 'auto';
@@ -222,14 +224,14 @@ document.addEventListener('keydown', function(e) {
 
 
 // ===================================
-// INICIALIZAÇÃO DOS EVENTOS DE CLIQUE (RESOLUÇÃO DO PROBLEMA PRINCIPAL)
+// INICIALIZAÇÃO DOS EVENTOS DE CLIQUE (RESOLUÇÃO DO PROBLEMA)
 // ===================================
 
 document.addEventListener('DOMContentLoaded', function() {
     
     // LIGA O EVENTO DE CLIQUE DO PORTFÓLIO À FUNÇÃO openPopup
     document.querySelectorAll('.portfolio-item').forEach(item => {
-        // Usamos o novo atributo data-popup-id para ligar o clique
+        // Usa o atributo data-popup-id (como no seu HTML corrigido)
         const popupId = item.getAttribute('data-popup-id');
         
         if (popupId) {
