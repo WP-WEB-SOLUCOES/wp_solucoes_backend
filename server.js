@@ -423,7 +423,7 @@ const verifyAdmin = (req, res, next) => {
     const token = req.cookies.token;
     if (!token) {
         if (req.path.startsWith('/pages/')) {
-            return res.redirect('/admin/login.html');
+            return res.redirect('/admin/login');
         }
         return res.status(401).json({ success: false, message: 'Token não fornecido.' });
     }
@@ -444,7 +444,7 @@ const verifyAdmin = (req, res, next) => {
         }
     } catch (error) {
         if (req.path.startsWith('/pages/')) {
-            return res.redirect('/admin/login.html');
+            return res.redirect('/admin/login');
         }
         return res.status(401).json({ success: false, message: 'Token inválido ou expirado.' });
     }
