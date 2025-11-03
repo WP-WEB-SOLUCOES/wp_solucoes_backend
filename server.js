@@ -25,6 +25,7 @@ const HOST = '0.0.0.0';
 const JWT_SECRET = process.env.JWT_SECRET;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
 // Validação de configuração
 if (!MONGO_URI || !JWT_SECRET || !GROQ_API_KEY || !WEBHOOK_SECRET) {
