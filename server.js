@@ -21,7 +21,7 @@ const { exec } = require('child_process');
 // --- Configuração Principal (Carregada do .env) ---
 const MONGO_URI = process.env.MONGO_URI;
 const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || '0.0.0.0'; // Mudei para 0.0.0.0 para ser acessível externamente
+const HOST = process.env.HOST || '0.0.0.0';
 const JWT_SECRET = process.env.JWT_SECRET;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
@@ -171,42 +171,29 @@ const app = express();
 // =======================================================
 // 6.5 ROTA DE AUTO-DEPLOY (GITHUB WEBHOOK)
 // =======================================================
-// Usamos express.raw() para o webhook ANTES do express.json()
 app.post('/github-webhook', express.raw({ type: 'application/json' }), (req, res) => {
     console.log('Webhook do GitHub recebido...');
-
     try {
-        // 1. Verificar o Segredo
         const signature = req.get('X-Hub-Signature-256');
         if (!signature) {
             console.warn('Webhook rejeitado: Sem assinatura.');
             return res.status(401).send('Assinatura X-Hub-Signature-256 é obrigatória.');
         }
-
         const hmac = crypto.createHmac('sha256', WEBHOOK_SECRET);
         const digest = 'sha256=' + hmac.update(req.body).digest('hex');
-
         if (!crypto.timingSafeEqual(Buffer.from(digest), Buffer.from(signature))) {
             console.warn('Webhook rejeitado: Assinatura inválida.');
             return res.status(401).send('Assinatura inválida.');
         }
-
-        // 2. Verificar o Evento
         const event = req.get('X-GitHub-Event');
         const data = JSON.parse(req.body.toString());
-
-        // A. Se for o evento "ping" (teste do GitHub)
         if (event === 'ping') {
             console.log('Evento "ping" do GitHub recebido com sucesso.');
             return res.status(200).send('Ping recebido com sucesso.');
         }
-
-        // B. Se for um push para a branch 'main'
         if (event === 'push' && data.ref === 'refs/heads/main') {
             console.log('Push para a branch [main] detectado. Iniciando deploy...');
-            res.status(202).send('Deploy iniciado.'); // Responde ao GitHub primeiro
-
-            // Executa o script
+            res.status(202).send('Deploy iniciado.');
             const deployScript = path.join(__dirname, 'deploy.sh');
             exec(`sh ${deployScript}`, (error, stdout, stderr) => {
                 if (error) {
@@ -219,12 +206,10 @@ app.post('/github-webhook', express.raw({ type: 'application/json' }), (req, res
                 }
                 console.log(`Stdout do deploy.sh: \n${stdout}`);
             });
-
         } else {
             console.log('Webhook recebido, mas não é um push para a [main]. Ignorando.');
             res.status(200).send('Evento recebido, mas ignorado.');
         }
-
     } catch (error) {
         console.error('Erro GERAL na rota /github-webhook:', error.message);
         res.status(500).send('Internal Server Error');
@@ -236,7 +221,6 @@ app.use(express.json());
 app.use(cookieParser());
 
 // --- Middleware de Segurança Helmet ---
-// <<< CORREÇÃO CRÍTICA >>>
 const helmetConfig = { 
     contentSecurityPolicy: {
       directives: {
@@ -258,16 +242,13 @@ const helmetConfig = {
         frameSrc: ["'none'"], 
         objectSrc: ["'none'"], 
       },
-    }
+    },
+    // <<< ESTA É A CORREÇÃO CRÍTICA >>>
+    // Desliga o HSTS se não estiver em produção (IS_PRODUCTION = false)
+    hsts: IS_PRODUCTION 
+      ? { maxAge: 31536000, includeSubDomains: true, preload: true }
+      : false 
 };
-// Só adiciona HSTS se estiver em produção
-if (IS_PRODUCTION) {
-    helmetConfig.hsts = {
-        maxAge: 31536000, // 1 ano
-        includeSubDomains: true,
-        preload: true
-    };
-}
 app.use(helmet(helmetConfig));
 // <<< FIM DA CORREÇÃO >>>
 
@@ -317,7 +298,7 @@ app.post('/admin/login', loginLimiter, async (req, res) => {
                 { expiresIn: '1h' }
             );
 
-            // <<< CORREÇÃO CRÍTICA >>>
+            // <<< ESTA É A CORREÇÃO CRÍTICA >>>
             res.cookie('token', token, {
                 httpOnly: true,
                 secure: IS_PRODUCTION, // Só será true em produção
@@ -343,7 +324,7 @@ app.post('/admin/login', loginLimiter, async (req, res) => {
 
 // --- Rota de Logout (Limpa o Cookie) ---
 app.get('/admin/logout', (req, res) => {
-    // <<< CORREÇÃO CRÍTICA >>>
+    // <<< ESTA É A CORREÇÃO CRÍTICA >>>
     res.clearCookie('token', {
         httpOnly: true,
         secure: IS_PRODUCTION, // Só será true em produção
@@ -824,7 +805,7 @@ server.listen(PORT, HOST, () => {
     console.log(`🤖 Sistema de IA inicializado`);
     console.log(`💬 Chat em tempo pronto para conexões`);
     if (IS_PRODUCTION) {
-        console.log("Rodando em modo de Produção (HSTS Habilitado)");
+        console.log("Rodando em modo de Produção");
     } else {
         console.warn("Atenção: Rodando em modo de Desenvolvimento (HSTS Desabilitado)");
     }
