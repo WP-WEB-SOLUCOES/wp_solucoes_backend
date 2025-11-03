@@ -1,15 +1,16 @@
 // /public/js/portfolio.js
 // Lógica de Filtragem e Popups do Portfólio
 
-// Variável para rastrear o estado do popup (ajuda a evitar pushState duplicado e gerencia o scroll do body)
+// Variável para rastrear o estado do popup (GLOBAL DENTRO DESTE MÓDULO)
 let isPopupOpen = false;
 
 // =======================================================
-// 1. FUNÇÕES GLOBAIS DE POPUP (Para funcionar com o onclick do HTML)
+// 1. FUNÇÕES GLOBAIS DE POPUP (ATRIBUÍDAS A 'window')
 // =======================================================
 
 /**
  * Abre o popup. Adiciona o estado ao histórico do navegador.
+ * Nota: Atribuído a window.openPopup para funcionar com onclick="" no HTML.
  * @param {string} popupId - O ID do elemento popup-overlay a ser aberto.
  */
 window.openPopup = function(popupId) {
@@ -25,7 +26,7 @@ window.openPopup = function(popupId) {
         isPopupOpen = true;
     }
     
-    // Foca no popup
+    // Foca no popup para melhor acessibilidade
     setTimeout(() => {
         popup.focus();
     }, 100);
@@ -33,6 +34,7 @@ window.openPopup = function(popupId) {
 
 /**
  * Fecha o popup. Usa window.history.back() para gerenciar o estado.
+ * Nota: Atribuído a window.closePopup para funcionar com onclick="" no HTML.
  * @param {string} popupId - O ID do elemento popup-overlay a ser fechado.
  */
 window.closePopup = function(popupId) {
@@ -47,14 +49,14 @@ window.closePopup = function(popupId) {
         isPopupOpen = false; 
         window.history.back(); 
     } else {
-        // Limpeza de overflow caso o history.back não o faça
+        // Se foi fechado diretamente (sem history.back), ajustamos o scroll
         document.body.style.overflow = 'auto';
     }
 }
 
 
 // =======================================================
-// 2. LÓGICA DE FILTRAGEM DO PORTFÓLIO
+// 2. LÓGICA DE FILTRAGEM E LISTENERS DE FECHAMENTO
 // =======================================================
 
 function setupPortfolioFiltering() {
@@ -72,16 +74,14 @@ function setupPortfolioFiltering() {
             
             items.forEach(item => {
                 const itemCategory = item.getAttribute('data-category');
-                
-                // Remove a classe 'animate' para resetar a animação e re-aplicar
-                item.classList.remove('animate');
+                item.classList.remove('animate'); 
                 
                 if (category === 'all' || itemCategory === category) {
                     item.style.display = 'block';
                     // Re-aplica a animação após um pequeno timeout
                     setTimeout(() => {
                         item.classList.add('animate');
-                    }, 50);
+                    }, 10);
                 } else {
                     item.style.display = 'none';
                 }
@@ -90,42 +90,29 @@ function setupPortfolioFiltering() {
     });
 }
 
-
-// =======================================================
-// 3. LISTENERS DE FECHAMENTO (Histórico, Teclado, Clique fora)
-// =======================================================
-
 function setupClosingEvents() {
-    // 3.1. Fechar popup ao clicar fora (overlay)
+    // Fechar popup ao clicar fora (overlay)
     document.querySelectorAll('.popup-overlay').forEach(overlay => {
         overlay.addEventListener('click', function(e) {
             if (e.target === this) {
                 const currentId = this.id;
-                // Usa a função closePopup para garantir que o history.back seja chamado
                 window.closePopup(currentId);
             }
         });
     });
 
-    // 3.2. Listener principal para o botão "Voltar" do navegador (popstate)
+    // Listener principal para o botão "Voltar" do navegador (popstate)
     window.addEventListener('popstate', function(e) {
         const activePopup = document.querySelector('.popup-overlay.active');
         
-        // Se há um popup ativo, e o estado atual não é o estado do popup, feche-o.
         if (activePopup && (!e.state || !e.state.popup)) {
             activePopup.classList.remove('active');
             document.body.style.overflow = 'auto';
             isPopupOpen = false;
         }
-        
-        // Se o histórico retroceder e tiver um hash, tenta abrir esse hash
-        const hash = window.location.hash.substring(1);
-        if (hash && document.getElementById(hash)?.classList.contains('popup-overlay')) {
-             window.openPopup(hash);
-        }
     });
 
-    // 3.3. Fechar com ESC (Desktop)
+    // Fechar com ESC (Desktop)
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             const activePopup = document.querySelector('.popup-overlay.active');
@@ -138,7 +125,7 @@ function setupClosingEvents() {
 
 
 // =======================================================
-// 4. INICIALIZAÇÃO
+// 3. INICIALIZAÇÃO
 // =======================================================
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -146,6 +133,5 @@ document.addEventListener('DOMContentLoaded', function() {
     setupClosingEvents();
     
     // Simula o clique em "All" (todos) para garantir que o filtro inicial seja aplicado
-    // Isso deve ser feito APÓS o setupFiltering
     document.querySelector('.portfolio-tab[data-category="all"]')?.click();
 });
